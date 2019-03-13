@@ -1,3 +1,4 @@
+package src;
 /**
  *  This class is the main class of the "World of Zuul" application. 
  *  "World of Zuul" is a very simple, text based adventure game.  Users 
@@ -15,8 +16,7 @@
  * @version 2006.03.30
  */
 
-public class Game 
-{
+public class Game {
     private Parser parser;
     private Room currentRoom;
         
@@ -35,33 +35,57 @@ public class Game
     private void createRooms()
     {
       
-        // create the rooms
-        Room cocoyashi = new Room("Cocoyashi");
-        Room nooberland = new Room("Nooberland");
-        Room wano_kuni = new Room("Wano_kuni");
-        Room water7 = new Room("Water7");
-        Room kalen = new Room("Kalen");
-        Room ortopia = new Room("Ortopia");
-        Room alabasta = new Room("Alabasta");
-        Room krakenland = new Room("Krakenland");
-        Room amazone_lily = new Room("Amazone_lily");
-        Room skypia = new Room("Skypia");
-        Room paris8 = new Room("Paris8, il semble que vous avez d�couvert une �le absente sur votre carte, et si vous l'exploriez ?");
-        Room rafel = new Room("Rafel, ~votre log pose n'arr�te pas de s'agiter ...~");
-        
+        Room cocoyashi, nooberland, wanoKuni, water7, kalen,ortopia,alabasta,krakenland,amazoneLily,skypia,paris8,rafel;
+              
+        cocoyashi = new Room("Cocoyashi");
+        nooberland = new Room("Nooberland");
+        wanoKuni = new Room("Wano_kuni");
+        water7 = new Room("Water7");
+        kalen = new Room("Kalen");
+        ortopia = new Room("Ortopia");
+        alabasta = new Room("Alabasta");
+        krakenland = new Room("Krakenland");
+        amazoneLily = new Room("Amazone_lily");
+        skypia = new Room("Skypia");
+        paris8 = new Room("Paris8, il semble que vous avez d�couvert une �le absente sur votre carte, et si vous l'exploriez ?");
+        rafel = new Room("Rafel, ~votre log pose n'arr�te pas de s'agiter ...~");
+
         // initialise room exits
-        cocoyashi.setExits(nooberland, null, null, null, null, null, null, null);
-        nooberland.setExits(null, water7, cocoyashi, wano_kuni, kalen, alabasta, null, null);
-        wano_kuni.setExits(null, nooberland, null, null, null, null, null, null);
-        water7.setExits(null, null, null, nooberland, null, null, null, null);
-        kalen.setExits(skypia, null, null, null, null, null, null, nooberland);
-        ortopia.setExits(krakenland, null, null, kalen, null, amazone_lily, null, null);
-        alabasta.setExits(null, null, null, null, null, null, nooberland, null);
-        krakenland.setExits(null, null, ortopia, skypia, null, null, null, null);
-        amazone_lily.setExits(null, null, null, null, null, null, ortopia, null);
-        skypia.setExits(paris8, krakenland, kalen, null, null, rafel, null, null);
-        paris8.setExits(null, null, skypia, null, null, null, null, null);
-        rafel.setExits(null, null, null, null, null, null, skypia, null);
+        cocoyashi.setExits("north",nooberland);
+
+        nooberland.setExits("east",water7);
+        nooberland.setExits("south",cocoyashi);
+        nooberland.setExits("west",wanoKuni);
+        nooberland.setExits("northWest",kalen);
+        nooberland.setExits("northEast",alabasta);
+
+        wanoKuni.setExits("east",nooberland);
+
+        water7.setExits("west",nooberland);
+
+        kalen.setExits("north",skypia);
+        kalen.setExits("southEast",nooberland);
+
+        ortopia.setExits("north",krakenland);
+        ortopia.setExits("west",kalen);
+        ortopia.setExits("northEast",amazoneLily);
+
+        alabasta.setExits("southWest",nooberland);
+        
+        krakenland.setExits("south",ortopia);
+        krakenland.setExits("west",skypia);
+
+        amazoneLily.setExits("southWest",ortopia);
+
+        skypia.setExits("north",paris8);
+        skypia.setExits("east",krakenland);
+        skypia.setExits("south",kalen);
+        skypia.setExits("northEast",rafel);
+
+        paris8.setExits("south",skypia);
+
+        rafel.setExits("southWest",skypia);
+      
 
         currentRoom = cocoyashi;  // start game outside
     }
@@ -94,7 +118,8 @@ public class Game
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
         System.out.println("Type 'help' if you need help.");
         System.out.println();
-        printLocationInfo();
+        System.out.println(currentRoom.getLongDescription());
+
     }
 
     /**
@@ -112,7 +137,11 @@ public class Game
         }
 
         String commandWord = command.getCommandWord();
-        if (commandWord.equals("help"))
+        if(commandWord.equals("look"))
+            look();
+        else if (commandWord.equals("eat"))
+            eat();
+        else if (commandWord.equals("help"))
             printHelp();
         else if (commandWord.equals("go"))
             goRoom(command);
@@ -135,7 +164,7 @@ public class Game
         System.out.println("around at the university.");
         System.out.println();
         System.out.println("Your command words are:");
-        System.out.println("   go quit help");
+        parser.showCommands();
     }
 
     /** 
@@ -152,71 +181,24 @@ public class Game
         String direction = command.getSecondWord();
 
         // Try to leave current room.
-        Room nextRoom = null;
-        if(direction.equals("north")) {
-            nextRoom = currentRoom.northExit;
-        }
-        if(direction.equals("east")) {
-            nextRoom = currentRoom.eastExit;
-        }
-        if(direction.equals("south")) {
-            nextRoom = currentRoom.southExit;
-        }
-        if(direction.equals("west")) {
-            nextRoom = currentRoom.westExit;
-        }
-        if(direction.equals("northwest")) {
-            nextRoom = currentRoom.northWestExit;
-        }
-        if(direction.equals("northeast")) {
-            nextRoom = currentRoom.northEastExit;
-        }
-        if(direction.equals("southwest")) {
-            nextRoom = currentRoom.southWestExit;
-        }
-        if(direction.equals("southeast")) {
-            nextRoom = currentRoom.southEastExit;
-        }
+       Room nextRoom = currentRoom.getExit(direction);
 
-        if (nextRoom == null) {
+        if (nextRoom == null)
             System.out.println("There is no door!");
-        }
         else {
             currentRoom = nextRoom;
-            printLocationInfo();
+            System.out.println(currentRoom.getLongDescription());
         }
+
     }
 
-    private void printLocationInfo(){
-        System.out.println("You are " +currentRoom.getDescription());
-        System.out.print("Exits: ");
-        if(currentRoom.northExit != null) {
-            System.out.print("north ");
-        }
-        if(currentRoom.eastExit != null) {
-            System.out.print("east ");
-        }
-        if(currentRoom.southExit != null) {
-            System.out.print("south ");
-        }
-        if(currentRoom.westExit != null) {
-            System.out.print("west ");
-        }
-        if(currentRoom.northEastExit != null) {
-            System.out.print("north-east ");
-        }
-        if(currentRoom.northWestExit != null) {
-            System.out.print("north-west ");
-        }
-        if(currentRoom.southEastExit != null) {
-            System.out.print("south-east ");
-        }
-        if(currentRoom.southWestExit != null) {
-            System.out.print("south-west ");
-        }
-        System.out.println();
+    private void look(){
+        System.out.println(currentRoom.getLongDescription());
     }
-
+    
+    private void eat(){
+        System.out.println("You have eaten now and you are not hungry any more");
+    }
     /** 
      * "Quit" was entered. Check the rest of the command to see
      * whether we really quit the game.
@@ -232,8 +214,10 @@ public class Game
             return true;  // signal that we want to quit
         }
     }
-    public static void main(String[] args){
-        Game jeu=new Game();
-        jeu.play();
+
+   public static void main(String[] args) {
+        Game newGame = new Game();
+        newGame.play();
     }
+
 }

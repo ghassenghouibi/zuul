@@ -1,3 +1,4 @@
+package src;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -62,5 +63,12 @@ public class Parser
         else {
             return new Command(null, word2); 
         }
+    }
+    /**
+    * Print out a list of valid command words.
+    */
+    public void showCommands()
+    {
+        commands.getCommandList();
     }
 }
