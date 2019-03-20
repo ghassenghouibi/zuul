@@ -55,7 +55,7 @@ public class GameEngine{
     private void createRooms()
     {
       
-        Room cocoyashi, nooberland, wanoKuni, water7, kalen,ortopia,alabasta,krakenland,amazoneLily,skypia,paris8,rafel;
+        Room cocoyashi, nooberland, wanoKuni, water7, kalen,ortopia,alabasta,krakenland,amazoneLily,skypia,paris8,rafel,pontDuJoie,elMourouj,parcB,laMarsa,sidiBouSaid;
               
         cocoyashi = new Room("Cocoyashi","src/images/kokoyashi.png");
         nooberland = new Room("Nooberland","src/images/Nooberland.png");
@@ -69,7 +69,11 @@ public class GameEngine{
         skypia = new Room("Skypia","src/images/skypia.png");
         paris8 = new Room("Paris8, il semble que vous avez découvert une île absente sur votre carte, et si vous l'exploriez ?","src/images/paris8.png");
         rafel = new Room("Rafel, ~votre log pose n'arrête pas de s'agiter ...~","src/images/raftel.png");
-
+        pontDuJoie = new Room("Pont Du joie ce pont fondé pour un but artistique ","src/images/pontdujoie.png");
+        elMourouj= new Room("El Mourouj c'est un quartier populaire par ces créatures qui vont vous aidez ","src/images/elmourouj.jpg");
+        parcB = new Room("Parc B c'est un parc de l'Esperance Sportif De Tunis fondé en 1919","src/images/parcb.jpg");
+        laMarsa = new Room("La marsa c'est la plage la plus douce ","src/images/lamarsa.jpg");
+        sidiBouSaid = new Room("Sidi bou Said c'est la meilleur vue du monde ","src/images/sidibousaid.jpg");
         // initialise room exits
         cocoyashi.setExits("north",nooberland);
 
@@ -96,6 +100,15 @@ public class GameEngine{
         krakenland.setExits("west",skypia);
 
         amazoneLily.setExits("southWest",ortopia);
+        amazoneLily.setExits("northEast",laMarsa);
+
+        laMarsa.setExits("northWest",elMourouj);
+
+        elMourouj.setExits("southEast",laMarsa);
+        elMourouj.setExits("southWest",krakenland);
+
+        parcB.setExits("northEast",rafel);
+        parcB.setExits("southWest",sidiBouSaid);
 
         skypia.setExits("north",paris8);
         skypia.setExits("east",krakenland);
@@ -105,7 +118,8 @@ public class GameEngine{
         paris8.setExits("south",skypia);
 
         rafel.setExits("southWest",skypia);
-      
+        rafel.setExits("north",pontDuJoie);
+        rafel.setExits("southEast",parcB);
 
         currentRoom = cocoyashi;  // start game outside
     }

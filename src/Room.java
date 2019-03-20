@@ -90,7 +90,6 @@ public class Room {
     }
 
 	public String getImageName() {
-		// TODO Auto-generated method stub
 		return imageName;
 	}
 
