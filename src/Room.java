@@ -89,4 +89,9 @@ public class Room {
         return description;
     }
 
+	public String getImageName() {
+		// TODO Auto-generated method stub
+		return imageName;
+	}
+
 }
