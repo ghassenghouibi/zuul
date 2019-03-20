@@ -18,9 +18,9 @@ import java.util.Set;
 
 public class Room {
 
-    public String description;
+    private String description;
     private HashMap<String, Room> exits;
-    
+    private String imageName;
 
     /**
      * Create a room described "description". Initially, it has
@@ -28,10 +28,11 @@ public class Room {
      * "an open court yard".
      * @param description The room's description.
      */
-    public Room(String description) 
+    public Room(String description,String image) 
     {
         this.description = description;
         exits = new HashMap<String,Room>();
+        imageName=image;
     }
 
     /**
@@ -51,11 +52,10 @@ public class Room {
     * for example "Exits: north west".
     * @return A description of the available exits.
     */
-    public String getExitString(){
-        String returnString = "Exits:";
-        Set<String> keys = exits.keySet();
-        for(String exit : keys)
-            returnString += " " + exit;
+    public StringBuilder getExitString(){
+        StringBuilder returnString = new StringBuilder("Exits:");
+        for(String exit : exits.keySet())
+            returnString.append(" " + exit);
         return returnString;
     }
     /**

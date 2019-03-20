@@ -41,8 +41,8 @@ public class GameEngine{
     private void printWelcome()
     {
         gui.print("\n");
-        gui.println("Welcome to the World of Zuul!");
-        gui.println("World of Zuul is a new, incredibly boring adventure game.");
+        gui.println("Welcome to the One Piece treasure cruise!");
+        gui.println("One Piece is a new, incredibly boring adventure game.");
         gui.println("Type 'help' if you need help.");
         gui.print("\n");
         gui.println(currentRoom.getLongDescription());

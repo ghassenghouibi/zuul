@@ -18,7 +18,7 @@ public class CommandWords
         "go", "quit", "help","look","eat"
     };
 
-    /**
+        /**
      * Constructor - initialise the command words.
      */
     public CommandWords()
@@ -28,10 +28,10 @@ public class CommandWords
 
     /**
      * Check whether a given String is a valid command word. 
-     * @return true if a given string is a valid command,
-     * false if it isn't.
-     */
-    public boolean isCommand(String aString){
+     * Return true if it is, false if it isn't.
+     **/
+    public boolean isCommand(String aString)
+    {
         for(int i = 0; i < validCommands.length; i++) {
             if(validCommands[i].equals(aString))
                 return true;
@@ -41,12 +41,14 @@ public class CommandWords
     }
 
     /*
-     * Print all valid commands to System.out.
+     * returns a String of all valid commands.
      */
-    public void getCommandList() {
+    public String getCommandList() 
+    {
+        StringBuilder commands = new StringBuilder();
         for(int i = 0; i < validCommands.length; i++) {
-            System.out.print(validCommands[i] + "  ");
+            commands.append( validCommands[i] + "  " );
         }
-        System.out.println();
+        return commands.toString();
     }
 }
