@@ -65,7 +65,7 @@ public class GameEngine{
         ortopia = new Room("Ortopia","src/images/Ortopia.png");
         alabasta = new Room("Alabasta","src/images/Alabasta.png");
         krakenland = new Room("Krakenland","src/images/Krakenland.png");
-        amazoneLily = new Room("Amazone_lily","src/images/AmazoneLily.png");
+        amazoneLily = new Room("Amazone_lily","src/images/AmazonLily.png");
         skypia = new Room("Skypia","src/images/skypia.png");
         paris8 = new Room("Paris8, il semble que vous avez découvert une île absente sur votre carte, et si vous l'exploriez ?","src/images/paris8.png");
         rafel = new Room("Rafel, ~votre log pose n'arrête pas de s'agiter ...~","src/images/raftel.png");
