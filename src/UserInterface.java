@@ -3,7 +3,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.URL;
-import java.awt.image.*;
+//import java.awt.image.*;
 public class UserInterface implements ActionListener{
 
 
@@ -299,7 +299,7 @@ public class UserInterface implements ActionListener{
 	     */
 	    private void processCommand()
 	    {
-	        boolean finished = false;
+	        //boolean finished = false;
 	        String input = entryField.getText();
 	        entryField.setText("");
 

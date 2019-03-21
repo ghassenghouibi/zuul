@@ -11,7 +11,7 @@
  */
 package src;
 
-import java.io.PrintStream;
+import java.util.Stack;
 
 public class GameEngine{
 
@@ -19,7 +19,7 @@ public class GameEngine{
     private Parser parser;
     private Room currentRoom;
     private UserInterface gui;
-
+    private Stack<Room> displacement;
         
     /**
      * Create the game and initialise its internal map.
@@ -27,9 +27,12 @@ public class GameEngine{
     public GameEngine() 
     {
         parser = new Parser();
+        displacement = new Stack<Room>(); 
         createRooms();
     }
-
+    /*
+    * Set the user Interface 
+    */
     public void setGUI(UserInterface userInterface)
     {
         gui = userInterface;
@@ -158,8 +161,10 @@ public class GameEngine{
         String commandWord = command.getCommandWord();
         if (commandWord.equals("help"))
             printHelp();
-        else if (commandWord.equals("go"))
-            goRoom(command);
+        else if (commandWord.equals("go")) 
+        	goRoom(command);
+        else if (commandWord.equals("back"))
+        	backRoom();
         else if (commandWord.equals("eat"))
             eat();
         else if (commandWord.equals("look"))
@@ -171,6 +176,22 @@ public class GameEngine{
                 endGame();
         }
     }
+
+    /*
+    * Get you back to the room just before 
+    */
+    private void backRoom() {
+    	if (displacement.isEmpty())
+    		gui.println("You are at the start Point");
+    	else {
+    		currentRoom=displacement.pop();
+    		gui.println("You back to "+currentRoom.getDescription());
+    		gui.println("You Maybe Missed those items :"+currentRoom.getItemsDescription());
+    		if(currentRoom.getImageName()!=null)
+    			gui.showImage(currentRoom.getImageName());
+    	}
+    }
+    
     
     /**
      * Print out some help information.
@@ -201,7 +222,7 @@ public class GameEngine{
 
         // Try to leave current room.
         Room nextRoom = currentRoom.getExit(direction);
-
+        displacement.push(currentRoom);
         if (nextRoom == null)
             gui.println("There is no door!");
         else {
@@ -211,20 +232,26 @@ public class GameEngine{
                 gui.showImage(currentRoom.getImageName());
         }
     }
-
+    /*
+    * Print goodbye and enable the entry field
+    */
     private void endGame() {
 		gui.println("Thank you for playing.  Good bye !");
         gui.enable(false);
     }
     
- 
-
+    /*
+    * Print the long description of the room
+    */
     private void look(){
         gui.print(currentRoom.getLongDescription());
     }
     
+    /*
+    * Print eat
+    */
     private void eat(){
-        gui.println("You have eaten now and you are not hungry any more");
+        gui.println("You had eaten now and you are not hungry any more");
     }
     
 }

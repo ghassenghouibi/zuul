@@ -14,9 +14,8 @@ package src;
  * @version 2006.03.30
  */
 import java.util.HashMap;
-import java.util.Set;
+//import java.util.Set;
 
-import com.sun.javafx.collections.MappingChange.Map;
 
 public class Room {
 
@@ -43,16 +42,18 @@ public class Room {
     /**
      * Define the exits of this room.  Every direction either leads
      * to another room or is null (no exit there).
-     * @param north The north exit.
-     * @param east The east east.
-     * @param south The south exit.
-     * @param west The west exit.
+     * @param String direction.
+     * @param Room neighbor.
      */
     public void setExits(String direction,Room neighbor){
         exits.put(direction, neighbor);
     }
 
-
+    /**
+     * Define the items of this room.
+     * @param String name.
+     * @param Item item.
+     */
     public void addItems(String name,Item item){
         items.put(name,item);
     }
@@ -66,14 +67,6 @@ public class Room {
         StringBuilder returnString = new StringBuilder("Exits:");
         for(String exit : exits.keySet())
             returnString.append(" " + exit);
-        return returnString;
-    }
-
-    //TODO
-    public StringBuilder getItemString(){
-        StringBuilder returnString = new StringBuilder("Items:");
-        for(String item :items.keySet())
-        	returnString.append(" "+item);
         return returnString;
     }
 
@@ -108,11 +101,24 @@ public class Room {
     {
         return description;
     }
-
+    
+    /**
+    * return the hole description of items in the room 
+    *  gold 50 price : 19.999
+    * @return A description of the item
+    */
+    public StringBuilder getItemsDescription()
+    {	
+    	StringBuilder returnString=new StringBuilder();
+    	for(String x :items.keySet()) {
+    		returnString.append(x+" "+(items.get(x)).getDescription()+"\n");
+    	}
+    	return returnString;
+    }
+    /**
+    * get image name
+    */
 	public String getImageName() {
 		return imageName;
 	}
-
-	
-
 }
