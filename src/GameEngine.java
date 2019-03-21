@@ -74,35 +74,48 @@ public class GameEngine{
         parcB = new Room("Parc B c'est un parc de l'Esperance Sportif De Tunis fondé en 1919","src/images/parcb.jpg");
         laMarsa = new Room("La marsa c'est la plage la plus douce ","src/images/lamarsa.jpg");
         sidiBouSaid = new Room("Sidi bou Said c'est la meilleur vue du monde ","src/images/sidibousaid.jpg");
-        // initialise room exits
+        // initialise room exits & items
         cocoyashi.setExits("north",nooberland);
-
+        cocoyashi.addItems("gold",new Item("this item have 2000 years",10,10));
+        
         nooberland.setExits("east",water7);
         nooberland.setExits("south",cocoyashi);
         nooberland.setExits("west",wanoKuni);
         nooberland.setExits("northWest",kalen);
         nooberland.setExits("northEast",alabasta);
+        nooberland.addItems("sakura",new Item("this item give you power",50,10));
+
 
         wanoKuni.setExits("east",nooberland);
+        wanoKuni.addItems("fafa",new Item("this item give you power",50,10));
+        wanoKuni.addItems("baba",new Item("this item give you life",50,10));
+        wanoKuni.addItems("dada",new Item("this item give you nothing",50,10));
 
         water7.setExits("west",nooberland);
+        water7.addItems("bar",new Item("this item make you rich",50,10));
 
         kalen.setExits("north",skypia);
         kalen.setExits("southEast",nooberland);
+        kalen.addItems("foo",new Item("this item make you famous",50,10));
 
         ortopia.setExits("north",krakenland);
         ortopia.setExits("west",kalen);
         ortopia.setExits("northEast",amazoneLily);
+        ortopia.addItems("dada",new Item("this item make you hungry",50,10));
 
         alabasta.setExits("southWest",nooberland);
-        
+        alabasta.addItems("dada",new Item("this item make you funny",50,10));
+
         krakenland.setExits("south",ortopia);
         krakenland.setExits("west",skypia);
+        krakenland.addItems("dada",new Item("this item make you dumb",50,10));
 
         amazoneLily.setExits("southWest",ortopia);
         amazoneLily.setExits("northEast",laMarsa);
+        amazoneLily.addItems("baba",new Item("this item give you life",50,10));
 
         laMarsa.setExits("northWest",elMourouj);
+        wanoKuni.addItems("dada",new Item("this item give you nothing",50,10));
 
         elMourouj.setExits("southEast",laMarsa);
         elMourouj.setExits("southWest",krakenland);
@@ -116,10 +129,13 @@ public class GameEngine{
         skypia.setExits("northEast",rafel);
 
         paris8.setExits("south",skypia);
+        paris8.addItems("medaille",new Item("this item make you hero",50,10));
 
         rafel.setExits("southWest",skypia);
         rafel.setExits("north",pontDuJoie);
         rafel.setExits("southEast",parcB);
+        rafel.addItems("PNL",new Item("this item make you the best",50,10));
+
 
         currentRoom = cocoyashi;  // start game outside
     }

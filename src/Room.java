@@ -16,11 +16,15 @@ package src;
 import java.util.HashMap;
 import java.util.Set;
 
+import com.sun.javafx.collections.MappingChange.Map;
+
 public class Room {
 
     private String description;
     private HashMap<String, Room> exits;
     private String imageName;
+    private HashMap<String,Item> items;
+    
 
     /**
      * Create a room described "description". Initially, it has
@@ -33,6 +37,7 @@ public class Room {
         this.description = description;
         exits = new HashMap<String,Room>();
         imageName=image;
+        this.items = new HashMap<String,Item>();
     }
 
     /**
@@ -47,6 +52,11 @@ public class Room {
         exits.put(direction, neighbor);
     }
 
+
+    public void addItems(String name,Item item){
+        items.put(name,item);
+    }
+
     /**
     * Return a description of the room's exits,
     * for example "Exits: north west".
@@ -58,6 +68,15 @@ public class Room {
             returnString.append(" " + exit);
         return returnString;
     }
+
+    //TODO
+    public StringBuilder getItemString(){
+        StringBuilder returnString = new StringBuilder("Items:");
+        for(String item :items.keySet())
+        	returnString.append(" "+item);
+        return returnString;
+    }
+
     /**
     * Return the room that is reached if we go from this
     * room in direction "direction". If there is no room in
@@ -77,8 +96,9 @@ public class Room {
     * @return A description of the room, including exits.
     */
     public String getLongDescription(){
-        return "You are " + description + ".\n" + getExitString();
+ 		return "You are " + description + ".\n" + getExitString() + "\n"+getItemString();
     }
+
     /**
     * Return a few description of this room, of the form:
     * You are in the boat.
@@ -92,5 +112,7 @@ public class Room {
 	public String getImageName() {
 		return imageName;
 	}
+
+	
 
 }
