@@ -12,7 +12,8 @@
 package src;
 
 import java.util.Stack;
-
+import java.util.concurrent.TimeUnit;
+import java.io.*;
 public class GameEngine{
 
 
@@ -20,6 +21,7 @@ public class GameEngine{
     private Room currentRoom;
     private UserInterface gui;
     private Stack<Room> displacement;
+    private Player player;
         
     /**
      * Create the game and initialise its internal map.
@@ -28,6 +30,7 @@ public class GameEngine{
     {
         parser = new Parser();
         displacement = new Stack<Room>(); 
+        player = new Player("goku",50,currentRoom);
         createRooms();
     }
     /*
@@ -169,6 +172,8 @@ public class GameEngine{
             eat();
         else if (commandWord.equals("look"))
             look();
+        else if (commandWord.equals("test"))
+        	testFile(command);
         else if (commandWord.equals("quit")) {
             if(command.hasSecondWord())
                 gui.println("Quit what?");
@@ -176,7 +181,6 @@ public class GameEngine{
                 endGame();
         }
     }
-
     /*
     * Get you back to the room just before 
     */
@@ -206,6 +210,32 @@ public class GameEngine{
     }
 
 
+    /*
+     * 
+     */
+    private void testFile(Command command){
+    	if(!command.hasSecondWord()) {
+    		gui.println("Test what ?\n<usage> you have to put a file name ");
+    		return;
+    	}    	
+        String line = null;
+        String fileName="testFiles/"+command.getSecondWord();
+        try {
+     
+            BufferedReader bufferedReader =  new BufferedReader(new FileReader(fileName));
+            while((line = bufferedReader.readLine()) != null) {				
+                interpretCommand(line);
+            }   
+            bufferedReader.close();         
+        }
+        catch(FileNotFoundException e) {
+            gui.println("Unable to open file >" + fileName);                
+        }
+        catch(IOException e) {
+        	gui.println("Error reading file >" + fileName);
+        }
+    	
+    }
     /** 
      * Try to go to one direction. If there is an exit, enter the new
      * room, otherwise print an error message.
@@ -226,6 +256,7 @@ public class GameEngine{
         if (nextRoom == null)
             gui.println("There is no door!");
         else {
+        	player.setLocation(nextRoom);
             currentRoom = nextRoom;
             gui.println(currentRoom.getLongDescription());
             if(currentRoom.getImageName() != null)
