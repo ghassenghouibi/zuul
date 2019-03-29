@@ -12,7 +12,6 @@
 package src;
 
 import java.util.Stack;
-import java.util.concurrent.TimeUnit;
 import java.io.*;
 public class GameEngine{
 
@@ -30,7 +29,7 @@ public class GameEngine{
     {
         parser = new Parser();
         displacement = new Stack<Room>(); 
-        player = new Player("goku",50,currentRoom);
+        player = new Player("sangoku",250,currentRoom);
         createRooms();
     }
     /*
@@ -82,47 +81,39 @@ public class GameEngine{
         sidiBouSaid = new Room("Sidi bou Said c'est la meilleur vue du monde ","src/images/sidibousaid.jpg");
         // initialise room exits & items
         cocoyashi.setExits("north",nooberland);
-        cocoyashi.addItems("gold",new Item("this item have 2000 years",10,10));
-        
+        cocoyashi.addItems("gold",new Item("gold","you can sell gold to get money",10,10));
+        cocoyashi.addItems("silver",new Item("silver","you can sell silver to get money",50,10));
+
         nooberland.setExits("east",water7);
         nooberland.setExits("south",cocoyashi);
         nooberland.setExits("west",wanoKuni);
         nooberland.setExits("northWest",kalen);
         nooberland.setExits("northEast",alabasta);
-        nooberland.addItems("sakura",new Item("this item give you power",50,10));
-
+        nooberland.addItems("sakura",new Item("sakura","this item give you power",500,10));
 
         wanoKuni.setExits("east",nooberland);
-        wanoKuni.addItems("fafa",new Item("this item give you power",50,10));
-        wanoKuni.addItems("baba",new Item("this item give you life",50,10));
-        wanoKuni.addItems("dada",new Item("this item give you nothing",50,10));
+        wanoKuni.addItems("fafa",new Item("fafa","this item give you power",50,10));
+        wanoKuni.addItems("baba",new Item("baba","this item give you life ",50,10));
 
         water7.setExits("west",nooberland);
-        water7.addItems("bar",new Item("this item make you rich",50,10));
 
         kalen.setExits("north",skypia);
         kalen.setExits("southEast",nooberland);
-        kalen.addItems("foo",new Item("this item make you famous",50,10));
 
         ortopia.setExits("north",krakenland);
         ortopia.setExits("west",kalen);
         ortopia.setExits("northEast",amazoneLily);
-        ortopia.addItems("dada",new Item("this item make you hungry",50,10));
 
         alabasta.setExits("southWest",nooberland);
-        alabasta.addItems("dada",new Item("this item make you funny",50,10));
 
         krakenland.setExits("south",ortopia);
         krakenland.setExits("west",skypia);
-        krakenland.addItems("dada",new Item("this item make you dumb",50,10));
 
         amazoneLily.setExits("southWest",ortopia);
         amazoneLily.setExits("northEast",laMarsa);
-        amazoneLily.addItems("baba",new Item("this item give you life",50,10));
 
         laMarsa.setExits("northWest",elMourouj);
-        wanoKuni.addItems("dada",new Item("this item give you nothing",50,10));
-
+        
         elMourouj.setExits("southEast",laMarsa);
         elMourouj.setExits("southWest",krakenland);
 
@@ -135,12 +126,10 @@ public class GameEngine{
         skypia.setExits("northEast",rafel);
 
         paris8.setExits("south",skypia);
-        paris8.addItems("medaille",new Item("this item make you hero",50,10));
-
+        paris8.addItems("cookie",new Item("cookie","This magic cookie multiply your bag weight by 2",0,0));
         rafel.setExits("southWest",skypia);
         rafel.setExits("north",pontDuJoie);
         rafel.setExits("southEast",parcB);
-        rafel.addItems("PNL",new Item("this item make you the best",50,10));
 
 
         currentRoom = cocoyashi;  // start game outside
@@ -174,6 +163,10 @@ public class GameEngine{
             look();
         else if (commandWord.equals("test"))
         	testFile(command);
+        else if (commandWord.equals("take"))
+        	take(command);
+        else if (commandWord.equals("drop"))
+        	drop(command);
         else if (commandWord.equals("quit")) {
             if(command.hasSecondWord())
                 gui.println("Quit what?");
@@ -190,7 +183,7 @@ public class GameEngine{
     	else {
     		currentRoom=displacement.pop();
     		gui.println("You back to "+currentRoom.getDescription());
-    		gui.println("You Maybe Missed those items :"+currentRoom.getItemsDescription());
+    		gui.println("You Maybe Missed those "+currentRoom.getItemsDescription());
     		if(currentRoom.getImageName()!=null)
     			gui.showImage(currentRoom.getImageName());
     	}
@@ -211,8 +204,8 @@ public class GameEngine{
 
 
     /*
-     * 
-     */
+    * 
+    */
     private void testFile(Command command){
     	if(!command.hasSecondWord()) {
     		gui.println("Test what ?\n<usage> you have to put a file name ");
@@ -240,8 +233,7 @@ public class GameEngine{
      * Try to go to one direction. If there is an exit, enter the new
      * room, otherwise print an error message.
      */
-    private void goRoom(Command command) 
-    {
+    private void goRoom(Command command){
         if(!command.hasSecondWord()) {
             // if there is no second word, we don't know where to go...
             gui.println("Go where?");
@@ -263,6 +255,26 @@ public class GameEngine{
                 gui.showImage(currentRoom.getImageName());
         }
     }
+    private void take(Command command) {
+    	if(!command.hasSecondWord()) {
+    		gui.print("take What ?");
+    		return;
+    	}
+        String newItem=command.getSecondWord();
+        player.addItemToBag((currentRoom.checkItemInTheRoom(newItem)).getName(), currentRoom.checkItemInTheRoom(newItem));
+    	currentRoom.removeItems(newItem);
+    	
+    }
+    
+    private void drop(Command command) {
+    	if(!command.hasSecondWord()) {
+    		gui.print("Drop What ?");
+    		return;
+    	}
+    	String dropItem=command.getSecondWord();
+        currentRoom.addItems((player.checkItemInTheBag(dropItem)).getName(), player.checkItemInTheBag(dropItem));
+    	player.removeItemToBag(dropItem);
+    }
     /*
     * Print goodbye and enable the entry field
     */
@@ -276,6 +288,8 @@ public class GameEngine{
     */
     private void look(){
         gui.print(currentRoom.getLongDescription());
+        gui.print("\n");
+        gui.print(player.showMyBag());
     }
     
     /*
