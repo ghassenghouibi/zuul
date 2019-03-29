@@ -93,7 +93,7 @@ public class GameEngine{
 
         wanoKuni.setExits("east",nooberland);
         wanoKuni.addItems("fafa",new Item("fafa","this item give you power",50,10));
-        wanoKuni.addItems("baba",new Item("baba","this item give you life ",50,10));
+        wanoKuni.addItems("apple",new Item("apple","this item give you life ",50,10));
 
         water7.setExits("west",nooberland);
 
@@ -126,7 +126,7 @@ public class GameEngine{
         skypia.setExits("northEast",rafel);
 
         paris8.setExits("south",skypia);
-        paris8.addItems("cookie",new Item("cookie","This magic cookie multiply your bag weight by 2",0,0));
+        paris8.addItems("cookie",new Item("cookie","This magic cookie multiply your bag weight by 2",250,0));
         rafel.setExits("southWest",skypia);
         rafel.setExits("north",pontDuJoie);
         rafel.setExits("southEast",parcB);
@@ -142,14 +142,15 @@ public class GameEngine{
      */
     public void interpretCommand(String commandLine) 
     {
-        gui.println(commandLine);
+        
+    	
+    	gui.println(commandLine);
         Command command = parser.getCommand(commandLine);
 
         if(command.isUnknown()) {
             gui.println("I don't know what you mean...");
             return;
         }
-
         String commandWord = command.getCommandWord();
         if (commandWord.equals("help"))
             printHelp();
@@ -158,13 +159,15 @@ public class GameEngine{
         else if (commandWord.equals("back"))
         	backRoom();
         else if (commandWord.equals("eat"))
-            eat();
+            eat(command);
         else if (commandWord.equals("look"))
             look();
         else if (commandWord.equals("test"))
         	testFile(command);
         else if (commandWord.equals("take"))
-        	take(command);
+            take(command);
+        else if (commandWord.equals("check"))
+            check();
         else if (commandWord.equals("drop"))
         	drop(command);
         else if (commandWord.equals("quit")) {
@@ -199,7 +202,7 @@ public class GameEngine{
     {
         gui.println("You are lost. You are alone. You wander");
         gui.println("around at Saint Denis, University Campus." + "\n");
-        gui.print("Your command words are: " + parser.showCommands());
+        gui.print(parser.showCommands());
     }
 
 
@@ -261,9 +264,19 @@ public class GameEngine{
     		return;
     	}
         String newItem=command.getSecondWord();
-        player.addItemToBag((currentRoom.checkItemInTheRoom(newItem)).getName(), currentRoom.checkItemInTheRoom(newItem));
-    	currentRoom.removeItems(newItem);
-    	
+        if(currentRoom.checkItemInTheRoom(newItem)!=null){
+        	if(player.checkWeight(newItem, currentRoom.checkItemInTheRoom(newItem) )) {
+        		player.addItemToBag(newItem,  currentRoom.checkItemInTheRoom(newItem));
+                currentRoom.removeItems(newItem);
+
+        	}else {
+                gui.print("You cannot pick up this item it's too heavy");
+                gui.print("\n");
+        	}
+        }else{
+            gui.print("You cannot carry this item maybe does'nt exist");
+            gui.print("\n");
+        }    	
     }
     
     private void drop(Command command) {
@@ -272,8 +285,15 @@ public class GameEngine{
     		return;
     	}
     	String dropItem=command.getSecondWord();
-        currentRoom.addItems((player.checkItemInTheBag(dropItem)).getName(), player.checkItemInTheBag(dropItem));
-    	player.removeItemToBag(dropItem);
+        if(player.checkItemInTheBag(dropItem)!=null){
+        	currentRoom.addItems(dropItem, player.checkItemInTheBag(dropItem));
+        	player.removeItemFromBag(dropItem);
+        }
+        else{
+            gui.print("Item does'nt present in your bag");
+            gui.print("\n");
+        }
+
     }
     /*
     * Print goodbye and enable the entry field
@@ -289,14 +309,34 @@ public class GameEngine{
     private void look(){
         gui.print(currentRoom.getLongDescription());
         gui.print("\n");
-        gui.print(player.showMyBag());
     }
     
+    private void check(){
+        gui.print(player.showMyBag());
+        gui.print("\n");
+    }
     /*
     * Print eat
     */
-    private void eat(){
-        gui.println("You had eaten now and you are not hungry any more");
+    private void eat(Command command){
+        if(!command.hasSecondWord()) {
+    		gui.print("Eat What ?");
+    		return;
+    	}
+    	String eatItem=command.getSecondWord();
+        String[] validItemToEat = {"cookie","apple"};
+        for(int i=0;i<validItemToEat.length;i++){
+            if(eatItem.equals(validItemToEat[i])){
+            	if(player.checkItemInTheBag(eatItem)!=null){
+            		player.removeItemFromBag(eatItem);
+                    player.setWeight((player.getWeight()*2));	
+                    gui.println("You had eaten a "+eatItem);
+                }
+            	else {
+            		gui.print("Item does'nt exist in you bag");
+            	}
+            }
+        }
     }
     
 }
