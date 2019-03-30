@@ -23,8 +23,8 @@ public class GameEngine{
     private Player player;
         
     /**
-     * Create the game and initialise its internal map.
-     */
+    * Create the game and initialise its internal map.
+    */
     public GameEngine() 
     {
         parser = new Parser();
@@ -140,42 +140,54 @@ public class GameEngine{
      * If this command ends the game, true is returned, otherwise false is
      * returned.
      */
-    public void interpretCommand(String commandLine) 
+    public void interpretCommand(Command commandLine) 
     {
         
     	
-    	gui.println(commandLine);
-        Command command = parser.getCommand(commandLine);
-
-        if(command.isUnknown()) {
-            gui.println("I don't know what you mean...");
-            return;
+    	gui.print("-----------------\n");
+        
+        CommandWord commandWord = commandLine.getCommandWord();
+        
+        switch(commandWord) {
+     
+        	case HELP:
+                printHelp();
+                break;
+        	case GO:
+        		goRoom(commandLine);
+        		break;
+        	case BACK:
+        		backRoom();
+        		break;
+        	case EAT:
+        		eat(commandLine);
+        		break;
+        	case LOOK:
+        		look();
+        		break;
+        	case TEST:
+        		testFile(commandLine);
+        		break;
+        	case TAKE:
+        		take(commandLine);
+        		break;
+        	case CHECK:
+        		check();
+        		break;
+        	case DROP:
+        		drop(commandLine);
+        		break;
+        	case QUIT:
+                if(commandLine.hasSecondWord())
+                    gui.println("Quit what?");
+                else
+                	endGame();
+                break;
+        	default:
+        		gui.println("I don't know what you mean...");
+         		break;
         }
-        String commandWord = command.getCommandWord();
-        if (commandWord.equals("help"))
-            printHelp();
-        else if (commandWord.equals("go")) 
-        	goRoom(command);
-        else if (commandWord.equals("back"))
-        	backRoom();
-        else if (commandWord.equals("eat"))
-            eat(command);
-        else if (commandWord.equals("look"))
-            look();
-        else if (commandWord.equals("test"))
-        	testFile(command);
-        else if (commandWord.equals("take"))
-            take(command);
-        else if (commandWord.equals("check"))
-            check();
-        else if (commandWord.equals("drop"))
-        	drop(command);
-        else if (commandWord.equals("quit")) {
-            if(command.hasSecondWord())
-                gui.println("Quit what?");
-            else
-                endGame();
-        }
+        
     }
     /*
     * Get you back to the room just before 
@@ -219,8 +231,8 @@ public class GameEngine{
         try {
      
             BufferedReader bufferedReader =  new BufferedReader(new FileReader(fileName));
-            while((line = bufferedReader.readLine()) != null) {				
-                interpretCommand(line);
+            while((line = bufferedReader.readLine()) != null) {
+                interpretCommand(parser.getCommand(line));
             }   
             bufferedReader.close();         
         }

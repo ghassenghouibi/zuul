@@ -15,32 +15,27 @@ public class CommandWords
 {
     // a constant array that holds all valid command words
 	private HashMap<String,CommandWord> validCommands;
-    //    "go", "quit", "help","look","eat","back","test","take","drop","check"
+    //"go", "quit", "help","look","eat","back","test","take","drop","check"
    
 
      /**
      * Constructor - initialise the command words.
      */
     public CommandWords(){
-        validCommands = new HashMap<String, CommandWord>();
-        validCommands.put("go", CommandWord.GO);
-        validCommands.put("help", CommandWord.HELP);
-        validCommands.put("quit", CommandWord.QUIT);
-        validCommands.put("look", CommandWord.LOOK);
-        validCommands.put("eat", CommandWord.EAT);
-        validCommands.put("back", CommandWord.BACK);
-        validCommands.put("test", CommandWord.TEST);
-        validCommands.put("take", CommandWord.TAKE);
-        validCommands.put("drop", CommandWord.DROP);
-        validCommands.put("check", CommandWord.CHECK);        
+    	validCommands = new HashMap<String, CommandWord>();
+        for(CommandWord command : CommandWord.values()) {
+            if(command != CommandWord.UNKNOWN) {
+                validCommands.put(command.toString(), command);
+            }
+        }      
     }
     
     /**
-     * Find the CommandWord associated with a command word.
-     * @param commandWord The word to look up.
-     * @return The CommandWord correspondng to commandWord, or UNKNOWN
-     *         if it is not a valid command word.
-     */
+    * Find the CommandWord associated with a command word.
+    * @param commandWord The word to look up.
+    * @return The CommandWord corresponding to commandWord, or UNKNOWN
+    *         if it is not a valid command word.
+    */
     public CommandWord getCommandWord(String commandWord){
     	
         CommandWord command = validCommands.get(commandWord);

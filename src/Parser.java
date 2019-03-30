@@ -1,6 +1,6 @@
 package src;
 import java.util.StringTokenizer;
-
+import java.util.Scanner;
 /*
  * This class is part of "World of Zuul". "World of Zuul" is a simple, 
  * text based adventure game.
@@ -22,13 +22,14 @@ public class Parser
 {
 
     private CommandWords commands;  // holds all valid command words
-
+    //private Scanner     reader;
     /**
      * Create a new Parser.
      */
     public Parser() 
     {
         commands = new CommandWords();
+        //reader = new Scanner(System.in);
     }
 
     /**
@@ -38,9 +39,13 @@ public class Parser
     public Command getCommand(String inputLine) 
     {
         //String inputLine = "";   // will hold the full input line
-        String word1;
-        String word2;
+        String word1=null;
+        String word2=null;
+        System.out.println("Parsinggg .......");
+        
+       // inputLine = reader.nextLine();
 
+        // Find up to two words on the line.
         StringTokenizer tokenizer = new StringTokenizer(inputLine);
 
         if(tokenizer.hasMoreTokens())
@@ -51,16 +56,17 @@ public class Parser
             word2 = tokenizer.nextToken();      // get second word
         else
             word2 = null;
-
+        
+        
+        System.out.println("hello ");
+        System.out.println(word1+" "+word2);
         // note: we just ignore the rest of the input line.
-
+        System.out.println("LALALA");
         // Now check whether this word is known. If so, create a command
         // with it. If not, create a "null" command (for unknown command).
 
-        if(commands.isCommand(word1))
-            return new Command(word1, word2);
-        else
-            return new Command(null, word2);
+        return new Command(commands.getCommandWord(word1), word2);
+
     }
 
     /**
