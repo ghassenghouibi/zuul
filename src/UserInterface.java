@@ -15,7 +15,6 @@ public class UserInterface implements ActionListener{
 	    private JLabel image;
 		private JButton north,northEast,northWest,east,west,southEast,southWest,south,look,help,back,none;
 	    private Parser parser;
-	    private CommandWords commands;  // holds all valid command words
 	    /**
 	     * Construct a UserInterface. As a parameter, a Game Engine
 	     * (an object processing and executing the game commands) is
@@ -69,8 +68,23 @@ public class UserInterface implements ActionListener{
 	    public void enable(boolean on)
 	    {
 	        entryField.setEditable(on);
-	        if(!on)
+	        if(!on) {
 	            entryField.getCaret().setBlinkRate(0);
+	            showImage("src/images/lose.jpg");
+				look.removeActionListener(this);
+				north.removeActionListener(this);
+				northEast.removeActionListener(this);
+				northWest.removeActionListener(this);
+				east.removeActionListener(this);
+				west.removeActionListener(this);
+				southEast.removeActionListener(this);
+				southWest.removeActionListener(this);
+				south.removeActionListener(this);
+				help.removeActionListener(this);
+				back.removeActionListener(this);
+				
+
+	        }
 	    }
 
 	    /**
@@ -305,6 +319,7 @@ public class UserInterface implements ActionListener{
 	        //boolean finished = false;
 	        String line = entryField.getText();
 	        entryField.setText("");
+	        println(line);
 	        engine.interpretCommand(parser.getCommand(line));
 	    }
 }

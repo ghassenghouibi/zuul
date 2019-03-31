@@ -1,6 +1,5 @@
 package src;
 import java.util.StringTokenizer;
-import java.util.Scanner;
 /*
  * This class is part of "World of Zuul". "World of Zuul" is a simple, 
  * text based adventure game.
@@ -41,7 +40,6 @@ public class Parser
         //String inputLine = "";   // will hold the full input line
         String word1=null;
         String word2=null;
-        System.out.println("Parsinggg .......");
         
        // inputLine = reader.nextLine();
 
@@ -57,11 +55,7 @@ public class Parser
         else
             word2 = null;
         
-        
-        System.out.println("hello ");
-        System.out.println(word1+" "+word2);
         // note: we just ignore the rest of the input line.
-        System.out.println("LALALA");
         // Now check whether this word is known. If so, create a command
         // with it. If not, create a "null" command (for unknown command).
 
