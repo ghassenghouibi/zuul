@@ -48,7 +48,7 @@ public class GameEngine{
     private void printWelcome()
     {
         gui.print("\n");
-        gui.println("Welcome to the One Piece treasure cruise!");
+        gui.println("Welcome to One Piece treasure cruise!");
         gui.println("One Piece is a new, incredibly boring adventure game.");
         gui.println("Type 'help' if you need help.");
         gui.print("\n");
@@ -299,6 +299,8 @@ public class GameEngine{
         	if(player.checkWeight(newItem, currentRoom.checkItemInTheRoom(newItem) )) {
         		player.addItemToBag(newItem,  currentRoom.checkItemInTheRoom(newItem));
                 currentRoom.removeItems(newItem);
+                gui.setBagContain(player.getTotalWeight(),player.getWeight()+player.getTotalWeight());
+
 
         	}else {
                 gui.print("You cannot pick up this item it's too heavy");
@@ -321,7 +323,8 @@ public class GameEngine{
     	String dropItem=command.getSecondWord();
         if(player.checkItemInTheBag(dropItem)!=null){
         	currentRoom.addItems(dropItem, player.checkItemInTheBag(dropItem));
-        	player.removeItemFromBag(dropItem);
+            player.removeItemFromBag(dropItem);
+            gui.setBagContain(player.getTotalWeight(),player.getWeight()+player.getTotalWeight());
         }
         else{
             gui.print("Item does'nt present in your bag");
@@ -358,13 +361,16 @@ public class GameEngine{
     private void pay() {
     	if(player.getLocation()==elMourouj) {
     		if(player.getSolde()-10>0) {
+                player.setSolde(player.getSolde()-10);
     			gui.print("Thank you it's 10$\n");
     			elMourouj.setExits("southEast",laMarsa);
-            	elMourouj.setExits("southWest",krakenland);
+                elMourouj.setExits("southWest",krakenland);
+                gui.setInformation(player.getSolde());
     		}else {
     			counter=101;
     		}
-    	}
+        }
+        
     }
     /**
     * This function allow the player to open a new exits for a room
@@ -398,6 +404,7 @@ public class GameEngine{
             		player.removeItemFromBag(eatItem);
                     player.setWeight((player.getWeight()*2));	
                     gui.println("You had eaten a "+eatItem);
+                    gui.setBagContain(player.getTotalWeight(),player.getWeight()+player.getTotalWeight());
                 }
             	else {
             		gui.print("Item does'nt exist in you bag");
