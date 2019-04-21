@@ -11,42 +11,63 @@
  */
 package src;
 
+import java.util.ArrayList;
 import java.util.Stack;
+import java.time.LocalTime;
 import java.io.*;
-public class GameEngine{
 
+public class GameEngine {
 
     private Parser parser;
     private Room currentRoom;
     private UserInterface gui;
     private Stack<Room> displacement;
     private Player player;
-    private int counter; 
-    private Room cocoyashi, nooberland, wanoKuni, water7, kalen,ortopia,alabasta,krakenland,amazoneLily,skypia,paris8,rafel,pontDuJoie,elMourouj,parcB,laMarsa,sidiBouSaid;
+    private int counter;
+    public  ArrayList<Room> rooms;
+    private Room cocoyashi, nooberland, wanoKuni, water7, kalen, ortopia, alabasta, krakenland, amazoneLily, skypia,
+            paris8, rafel, pontDuJoie, elMourouj, parcB, laMarsa, sidiBouSaid;
 
     /**
-    * Create the game and initialise its internal map.
-    */
-    public GameEngine() 
-    {
+     * Create the game and initialise its internal map.
+     */
+    public GameEngine() {
         parser = new Parser();
-        displacement = new Stack<Room>(); 
-        player = new Player("sangoku",250,currentRoom,50);
+        displacement = new Stack<Room>();
+        player = new Player("sangoku", 250, currentRoom, 50);
+        rooms=new ArrayList<Room>();
         createRooms();
     }
+
     /**
-    * Set the user Interface 
-    */
-    public void setGUI(UserInterface userInterface)
-    {
+     * Set the user Interface
+     */
+    public void setGUI(UserInterface userInterface) {
         gui = userInterface;
-        printWelcome();
     }
+
+    public void play(UserInterface userInterface) {
+        setGUI(userInterface);
+        printWelcome();
+        int finish = 0;
+        // Maybe giving some extra time
+        LocalTime time = LocalTime.now();
+        LocalTime localTime3 = time.plusMinutes(10);
+
+        do {
+            LocalTime currentTime = LocalTime.now();
+            //System.out.println("Minute: " + currentTime.getMinute());
+            if (currentTime.getMinute() == localTime3.getMinute()) {
+                endGame();
+                finish = 1;
+            }
+        } while (finish != 1);
+    }
+
     /**
      * Print out the opening message for the player.
      */
-    private void printWelcome()
-    {
+    private void printWelcome() {
         gui.print("\n");
         gui.println("Welcome to One Piece treasure cruise!");
         gui.println("One Piece is a new, incredibly boring adventure game.");
@@ -56,122 +77,136 @@ public class GameEngine{
         gui.showImage(currentRoom.getImageName());
 
     }
+
     /**
      * Create all the rooms and link their exits together.
      */
-    private void createRooms()
-    {
-      
-              
-        cocoyashi = new Room("Cocoyashi","src/images/kokoyashi.png");
-        nooberland = new Room("Nooberland","src/images/Nooberland.png");
-        wanoKuni = new Room("Wano_kuni","src/images/wanokuni.png");
-        water7 = new Room("Water7","src/images/Water_Seven.png");
-        kalen = new Room("Kalen","src/images/kalen.png");
-        ortopia = new Room("Ortopia","src/images/Ortopia.png");
+    private void createRooms() {
+
+        cocoyashi = new Room("Cocoyashi", "src/images/kokoyashi.png");
+        rooms.add(cocoyashi);
+        nooberland = new Room("Nooberland", "src/images/Nooberland.png");
+        rooms.add(nooberland);
+        wanoKuni = new Room("Wano_kuni", "src/images/wanokuni.png");
+        rooms.add(wanoKuni);
+        water7 = new Room("Water7", "src/images/Water_Seven.png");
+        rooms.add(water7);
+        kalen = new Room("Kalen", "src/images/kalen.png");
+        rooms.add(kalen);
+        ortopia = new Room("Ortopia", "src/images/Ortopia.png");
+        rooms.add(ortopia);
         alabasta = new Room("Alabasta if you give me gold i will get to room that can help you","src/images/Alabasta.png");
-        krakenland = new Room("Krakenland","src/images/Krakenland.png");
-        amazoneLily = new Room("Amazone_lily","src/images/AmazonLily.png");
-        skypia = new Room("Skypia","src/images/skypia.png");
+        rooms.add(alabasta);
+        krakenland = new Room("Krakenland", "src/images/Krakenland.png");
+        rooms.add(krakenland);
+        amazoneLily = new Room("Amazone_lily", "src/images/AmazonLily.png");
+        rooms.add(amazoneLily);
+        skypia = new Room("Skypia", "src/images/skypia.png");
+        rooms.add(skypia);
         paris8 = new Room("Paris8, il semble que vous avez découvert une île absente sur votre carte, et si vous l'exploriez ?","src/images/paris8.png");
-        rafel = new Room("Rafel, ~votre log pose n'arrête pas de s'agiter ...~","src/images/raftel.png");
-        pontDuJoie = new Room("Pont Du joie ce pont fondé pour un but artistique ","src/images/pontdujoie.png");
-        elMourouj= new Room("It's a tramways that will get you to the other side \n but you have to pay the ticket or you will lose","src/images/elmourouj.jpg");
-        parcB = new Room("Parc B c'est un parc de l'Esperance Sportif De Tunis fondé en 1919","src/images/parcb.jpg");
-        laMarsa = new Room("La marsa c'est la plage la plus douce ","src/images/lamarsa.jpg");
-        sidiBouSaid = new Room("Sidi bou Said c'est la meilleur vue du monde ","src/images/sidibousaid.jpg");
+        rooms.add(paris8);
+        rafel = new Room("Rafel, ~votre log pose n'arrête pas de s'agiter ...~", "src/images/raftel.png");
+        rooms.add(rafel);
+        pontDuJoie = new Room("Pont Du joie ce pont fondé pour un but artistique ", "src/images/pontdujoie.png");
+        rooms.add(pontDuJoie);
+        elMourouj = new Room("It's a tramways that will get you to the other side \n but you have to pay the ticket or you will lose","src/images/elmourouj.jpg");
+        rooms.add(elMourouj);
+        parcB = new Room("Parc B c'est un parc de l'Esperance Sportif De Tunis fondé en 1919", "src/images/parcb.jpg");
+        rooms.add(parcB);
+        laMarsa = new Room("La marsa c'est la plage la plus douce ", "src/images/lamarsa.jpg");
+        rooms.add(laMarsa);
+        sidiBouSaid = new Room("Sidi bou Said c'est la meilleur vue du monde ", "src/images/sidibousaid.jpg");
+        rooms.add(sidiBouSaid);
         // initialise room exits & items
-        cocoyashi.setExits("north",nooberland);
-        cocoyashi.addItems("gold",new Item("gold","you can sell gold to get money",10,10));
-        cocoyashi.addItems("silver",new Item("silver","you can sell silver to get money",50,10));
+        cocoyashi.setExits("north", nooberland);
+        cocoyashi.addItems("gold", new Item("gold", "you can sell gold to get money", 10, 10));
+        cocoyashi.addItems("silver", new Item("silver", "you can sell silver to get money", 50, 10));
 
-        nooberland.setExits("east",water7);
-        nooberland.setExits("south",cocoyashi);
-        nooberland.setExits("west",wanoKuni);
-        nooberland.setExits("northWest",kalen);
-        nooberland.setExits("northEast",alabasta);
-        nooberland.addItems("sakura",new Item("sakura","this item give you power",500,10));
+        nooberland.setExits("east", water7);
+        nooberland.setExits("south", cocoyashi);
+        nooberland.setExits("west", wanoKuni);
+        nooberland.setExits("northWest", kalen);
+        nooberland.setExits("northEast", alabasta);
+        nooberland.addItems("sakura", new Item("sakura", "this item give you power", 500, 10));
 
-        wanoKuni.setExits("east",nooberland);
-        wanoKuni.addItems("fafa",new Item("fafa","this item give you power",50,10));
-        wanoKuni.addItems("apple",new Item("apple","this item give you life ",50,10));
+        wanoKuni.setExits("east", nooberland);
+        wanoKuni.addItems("fafa", new Item("fafa", "this item give you power", 50, 10));
+        wanoKuni.addItems("apple", new Item("apple", "this item give you life ", 50, 10));
 
-        water7.setExits("west",nooberland);
+        water7.setExits("west", nooberland);
+        water7.addItems("beamer", new Item("beamer", "this item can teleport you to a random room", 5, 10));
 
-        kalen.setExits("north",skypia);
-        kalen.setExits("southEast",nooberland);
+        kalen.setExits("north", skypia);
+        kalen.setExits("southEast", nooberland);
+        kalen.addItems("ammo", new Item("Beamer", "this item can charge your Beamer", 1, 10));
 
-        ortopia.setExits("north",krakenland);
-        ortopia.setExits("west",kalen);
-        ortopia.setExits("northEast",amazoneLily);
+        ortopia.setExits("north", krakenland);
+        ortopia.setExits("west", kalen);
+        ortopia.setExits("northEast", amazoneLily);
 
-        alabasta.setExits("southWest",nooberland);
+        alabasta.setExits("southWest", nooberland);
 
-        krakenland.setExits("south",ortopia);
-        krakenland.setExits("west",skypia);
+        krakenland.setExits("south", ortopia);
+        krakenland.setExits("west", skypia);
 
-        amazoneLily.setExits("southWest",ortopia);
-        
-        amazoneLily.setExits("northEast",laMarsa);
+        amazoneLily.setExits("southWest", ortopia);
 
-        laMarsa.setExits("northWest",elMourouj);
-        
-        
-        parcB.setExits("northEast",rafel);
-        parcB.setExits("southWest",sidiBouSaid);
+        amazoneLily.setExits("northEast", laMarsa);
 
-        skypia.setExits("north",paris8);
-        skypia.setExits("east",krakenland);
-        skypia.setExits("south",kalen);
-        skypia.setExits("northEast",rafel);
+        laMarsa.setExits("northWest", elMourouj);
 
-        paris8.setExits("south",skypia);
-        paris8.addItems("cookie",new Item("cookie","This magic cookie multiply your bag weight by 2",250,0));
-        rafel.setExits("southWest",skypia);
-        rafel.setExits("north",pontDuJoie);
-        rafel.setExits("southEast",parcB);
-        rafel.addItems("OtropiaKey",new Item("OtropiaKey","this is a key of a room ",50,10));
+        parcB.setExits("northEast", rafel);
+        parcB.setExits("southWest", sidiBouSaid);
 
+        skypia.setExits("north", paris8);
+        skypia.setExits("east", krakenland);
+        skypia.setExits("south", kalen);
+        skypia.setExits("northEast", rafel);
 
-        currentRoom = cocoyashi;  // start game outside
+        paris8.setExits("south", skypia);
+        paris8.addItems("cookie", new Item("cookie", "This magic cookie multiply your bag weight by 2", 250, 0));
+        rafel.setExits("southWest", skypia);
+        rafel.setExits("north", pontDuJoie);
+        rafel.setExits("southEast", parcB);
+        rafel.addItems("OtropiaKey", new Item("OtropiaKey", "this is a key of a room ", 50, 10));
+
+        currentRoom = cocoyashi; // start game outside
     }
 
     /**
-     * Given a command, process (that is: execute) the command.
-     * If this command ends the game, true is returned, otherwise false is
-     * returned.
+     * Given a command, process (that is: execute) the command. If this command ends
+     * the game, true is returned, otherwise false is returned.
      */
-    public void interpretCommand(Command commandLine) 
-    {
-    	//counter
-    	if(counter>100) {
-    		gui.print("You Lose !\n");
-    		endGame();
-    		return;
-    	}
-    		
+    public void interpretCommand(Command commandLine) {
+        // counter
+        if (counter > 100) {
+            gui.print("You Lose !\n");
+            endGame();
+            return;
+        }
+
         counter++;
         CommandWord commandWord = commandLine.getCommandWord();
-        
-        switch(commandWord) {
-     
-        	case HELP:
-                printHelp();
-                break;
-        	case GO:
-        		goRoom(commandLine);
-        		break;
-        	case BACK:
-        		backRoom();
-        		break;
-        	case EAT:
-        		eat(commandLine);
-        		break;
-        	case LOOK:
-        		look();
-        		break;
-        	case TEST:
-        		testFile(commandLine);
+
+        switch (commandWord) {
+
+        case HELP:
+            printHelp();
+            break;
+        case GO:
+            goRoom(commandLine);
+            break;
+        case BACK:
+            backRoom();
+            break;
+        case EAT:
+            eat(commandLine);
+            break;
+        case LOOK:
+            look();
+            break;
+        case TEST:
+            testFile(commandLine);
         		break;
         	case TAKE:
         		take(commandLine);
@@ -187,7 +222,10 @@ public class GameEngine{
         		break;
         	case OPEN:
         		openRoom();
-        		break;
+                break;
+            case TELEPORT:
+                teleport();
+                break;
         	case QUIT:
                 if(commandLine.hasSecondWord())
                     gui.println("Quit what?");
@@ -411,6 +449,25 @@ public class GameEngine{
             	}
             }
         }
+    }
+
+    private void teleport(){
+        int size = rooms.size();
+        Room x;
+        do {
+            int rand = (int)(Math.random() * size + 0);
+            x=rooms.get(rand);
+        }while(x==currentRoom);
+        currentRoom=x;
+        gui.println("You was teleported to "+currentRoom.getDescription());
+        gui.println("You Maybe Missed those "+currentRoom.getItemsDescription());
+        if(currentRoom.getImageName()!=null){
+            gui.showImage(currentRoom.getImageName());
+        }
+
+
+
+
     }
     
 }

@@ -26,7 +26,7 @@ public class Game
           
         engine = new GameEngine(); 
         gui = new UserInterface(engine);
-        engine.setGUI(gui);
+        engine.play(gui);
         
     }
     
