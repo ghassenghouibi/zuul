@@ -23,7 +23,7 @@ public class GameEngine {
     private UserInterface gui;
     private Stack<Room> displacement;
     private Player player;
-    private int counter;
+    private Room   beamerCharged;
     public  ArrayList<Room> rooms;
     private Room cocoyashi, nooberland, wanoKuni, water7, kalen, ortopia, alabasta, krakenland, amazoneLily, skypia,
             paris8, rafel, pontDuJoie, elMourouj, parcB, laMarsa, sidiBouSaid;
@@ -121,6 +121,7 @@ public class GameEngine {
         cocoyashi.setExits("north", nooberland);
         cocoyashi.addItems("gold", new Item("gold", "you can sell gold to get money", 10, 10));
         cocoyashi.addItems("silver", new Item("silver", "you can sell silver to get money", 50, 10));
+        cocoyashi.addCharacters("cocoyahi", new Characters("Dali", "Good moring i'm dali i can help you if you give me some money","Go to paris8 room you'll find a cookie eat it this make you bag bigger", new Item("gold","gold", 10,10) ));
 
         nooberland.setExits("east", water7);
         nooberland.setExits("south", cocoyashi);
@@ -138,7 +139,10 @@ public class GameEngine {
 
         kalen.setExits("north", skypia);
         kalen.setExits("southEast", nooberland);
-        kalen.addItems("ammo", new Item("Beamer", "this item can charge your Beamer", 1, 10));
+        kalen.addItems("ammo", new Item("ammo", "this item can charge your Beamer", 1, 10));
+        kalen.addItems("ammo", new Item("ammo", "this item can charge your Beamer", 1, 10));
+        kalen.addItems("ammo", new Item("ammo", "this item can charge your Beamer", 1, 10));
+        kalen.addItems("ammo", new Item("ammo", "this item can charge your Beamer", 1, 10));
 
         ortopia.setExits("north", krakenland);
         ortopia.setExits("west", kalen);
@@ -178,14 +182,6 @@ public class GameEngine {
      * the game, true is returned, otherwise false is returned.
      */
     public void interpretCommand(Command commandLine) {
-        // counter
-        if (counter > 100) {
-            gui.print("You Lose !\n");
-            endGame();
-            return;
-        }
-
-        counter++;
         CommandWord commandWord = commandLine.getCommandWord();
 
         switch (commandWord) {
@@ -208,33 +204,41 @@ public class GameEngine {
         case TEST:
             testFile(commandLine);
         		break;
-        	case TAKE:
-        		take(commandLine);
-        		break;
-        	case CHECK:
-        		check();
-        		break;
-        	case DROP:
-        		drop(commandLine);
-        		break;
-        	case PAY:
-        		pay();
-        		break;
-        	case OPEN:
-        		openRoom();
-                break;
-            case TELEPORT:
-                teleport();
-                break;
-        	case QUIT:
-                if(commandLine.hasSecondWord())
-                    gui.println("Quit what?");
-                else
-                	endGame();
-                break;
-        	default:
-        		gui.println("I don't know what you mean...");
-         		break;
+        case TAKE:
+            take(commandLine);
+            break;
+        case CHECK:
+            check();
+            break;
+        case DROP:
+            drop(commandLine);
+            break;
+        case PAY:
+            pay();
+            break;
+        case OPEN:
+            openRoom();
+            break;
+        case CHARGE:
+            charge();
+            break;
+        case FIRE:
+            fire();
+            break;
+        case TALK:
+            talk();
+            break;
+        case GIVE:
+            break;
+        case QUIT:
+            if(commandLine.hasSecondWord())
+                gui.println("Quit what?");
+            else
+                endGame();
+            break;
+        default:
+            gui.println("I don't know what you mean...");
+            break;
         }
         
     }
@@ -253,6 +257,21 @@ public class GameEngine {
     	}
     }
     
+
+    private void charge(){
+        if(player.checkItemInTheBag("beamer")!=null){
+            if(player.checkItemInTheBag("ammo")!=null){
+                player.removeItemFromBag("ammo");
+                beamerCharged=currentRoom;
+            }
+            else{
+                gui.println("You are OUT OF AMMO");
+            }
+        }
+        else{
+            gui.println("You must have a beamer first");
+        }
+    }
     
     /**
     * Print out some help information.
@@ -392,6 +411,10 @@ public class GameEngine {
         gui.print(player.showMyBag());
         gui.print("\n");
     }
+
+    private void talk(){
+        gui.println(currentRoom.getCharactersHi());
+    }
     /**
     * This function allows the player to pay bills to have exits room
     * other case he lose
@@ -404,11 +427,8 @@ public class GameEngine {
     			elMourouj.setExits("southEast",laMarsa);
                 elMourouj.setExits("southWest",krakenland);
                 gui.setInformation(player.getSolde());
-    		}else {
-    			counter=101;
-    		}
+            }
         }
-        
     }
     /**
     * This function allow the player to open a new exits for a room
@@ -451,23 +471,18 @@ public class GameEngine {
         }
     }
 
-    private void teleport(){
-        int size = rooms.size();
-        Room x;
-        do {
-            int rand = (int)(Math.random() * size + 0);
-            x=rooms.get(rand);
-        }while(x==currentRoom);
-        currentRoom=x;
-        gui.println("You was teleported to "+currentRoom.getDescription());
-        gui.println("You Maybe Missed those "+currentRoom.getItemsDescription());
-        if(currentRoom.getImageName()!=null){
-            gui.showImage(currentRoom.getImageName());
+    private void fire(){
+        if(beamerCharged!=null){
+            currentRoom=beamerCharged;
+            gui.println("You was teleported to "+currentRoom.getDescription());
+            gui.println("You Maybe Missed those "+currentRoom.getItemsDescription());
+            if(currentRoom.getImageName()!=null){
+                gui.showImage(currentRoom.getImageName());
+            }
         }
-
-
-
-
+        else{
+            gui.println("charge your beamer before please");
+        }
     }
     
 }
