@@ -22,8 +22,8 @@ public class ItemList {
 	}
 
 
-	public void addCharacters(String roomName,Characters character){
-		characters.put(roomName,character);
+	public void addCharacters(String charactersName,Characters character){
+		characters.put(charactersName,character);
 	}
 
 	/**
@@ -91,7 +91,7 @@ public class ItemList {
 	public StringBuilder getCharactersDescription(){
 		StringBuilder returnString=new StringBuilder();
 		if(characters.isEmpty()) 
-			return returnString.append(" No characters here");
+			return returnString.append("No characters here");
 		
 		for(Characters x : characters.values()) 
 			returnString.append(" "+x.getName());
@@ -105,6 +105,27 @@ public class ItemList {
 			return returnString.append("No characters here");
 		for(Characters x : characters.values()) 
 			returnString.append(x.getName()+":"+x.getHello());
+		return returnString;
+	}
+
+	public String giveCharactersItem(Item item){
+
+		for(Characters x : characters.values()){
+			if((x.getItem()).getName()==item.getName()){
+				System.out.println("Yees");
+				return x.getHelp();
+			}
+		}
+		return "false";
+	}
+
+	public StringBuilder getHelp(Item item){
+		StringBuilder returnString=new StringBuilder();
+		if(characters.isEmpty()) 
+			return returnString.append("No characters here");
+		for(Characters x : characters.values()) 
+			returnString.append("=>"+x.getHelp());
+
 		return returnString;
 	}
 

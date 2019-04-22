@@ -127,6 +127,15 @@ public class Room {
         return items.getHi()+"\n";
     }
     
+
+    public String giveCharactersItem(Item item){
+        if(items.giveCharactersItem(item)!="false"){
+            return items.giveCharactersItem(item);
+        }
+        else{
+            return "This is not the item that i search but i'll keep it\n";
+        }
+    }
     public void setExitByDescription(String direction,String Description){
         exits.put(direction, exits.get(Description));
     }

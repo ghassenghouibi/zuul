@@ -36,7 +36,7 @@ public class Scenario{
         cocoyashi.setExits("north", nooberland);
         cocoyashi.addItems("gold", new Item("gold", "you can sell gold to get money", 10, 10));
         cocoyashi.addItems("silver", new Item("silver", "you can sell silver to get money", 50, 10));
-        cocoyashi.addCharacters("cocoyahi", new Characters("Dali", "Good moring i'm dali i can help you if you give me some money","Go to paris8 room you'll find a cookie eat it this make you bag bigger", new Item("gold","gold", 10,10) ));
+        cocoyashi.addCharacters("cocoyahi", new Characters("Dali", "I can help you if you give me some money","Go to paris8 room you'll find a cookie eat it this make you bag bigger", new Item("gold", "you can sell gold to get money", 10, 10) ));
 
         nooberland.setExits("east", water7);
         nooberland.setExits("south", cocoyashi);
@@ -60,7 +60,8 @@ public class Scenario{
         ortopia.setExits("north", krakenland);
         ortopia.setExits("west", kalen);
         ortopia.setExits("northEast", amazoneLily);
-
+        ortopia.addItems("money",new Item("money","money",1,500));
+        
         alabasta.setExits("southWest", nooberland);
 
         krakenland.setExits("south", ortopia);

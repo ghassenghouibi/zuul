@@ -1,14 +1,14 @@
 /**
- *  This class is part of the "World of Zuul" application. 
- *  "World of Zuul" is a very simple, text based adventure game.
- * 
- *  This class creates all rooms, creates the parser and starts
- *  the game.  It also evaluates and executes the commands that 
- *  the parser returns.
- * 
- * @author  Michael Kolling and David J. Barnes
- * @version 1.0 (Jan 2003)
- */
+*  This class is part of the "World of Zuul" application. 
+*  "World of Zuul" is a very simple, text based adventure game.
+* 
+*  This class creates all rooms, creates the parser and starts
+*  the game.  It also evaluates and executes the commands that 
+*  the parser returns.
+* 
+* @author  Michael Kolling and David J. Barnes
+* @version 1.0 (Jan 2003)
+*/
 package src;
 
 import java.util.Stack;
@@ -126,6 +126,7 @@ public class GameEngine {
             talk();
             break;
         case GIVE:
+            give(commandLine);
             break;
         case QUIT:
             if(commandLine.hasSecondWord())
@@ -250,16 +251,16 @@ public class GameEngine {
     	}
         String newItem=command.getSecondWord();
         if(currentRoom.checkItemInTheRoom(newItem)!=null){
-        	if(player.checkWeight(newItem, currentRoom.checkItemInTheRoom(newItem) )) {
-        		player.addItemToBag(newItem,  currentRoom.checkItemInTheRoom(newItem));
-                currentRoom.removeItems(newItem);
-                if(newItem=="gold"){
-                    System.out.println(newItem);
-                    currentRoom.setImageName("src/images/kokoyashi2.png");
-                    gui.showImage(currentRoom.getImageName());
+        	if(player.checkWeight(newItem, currentRoom.checkItemInTheRoom(newItem))){
+                if(currentRoom.checkItemInTheRoom(newItem).getName()=="money"){
+                    player.setSolde(currentRoom.checkItemInTheRoom(newItem).getPrice()+player.getSolde());
+                    gui.setSolde(currentRoom.checkItemInTheRoom(newItem).getPrice()+player.getSolde());
                 }
-                gui.setBagContain(player.getTotalWeight(),player.getWeight()+player.getTotalWeight());
-
+                else{
+        		    player.addItemToBag(newItem,  currentRoom.checkItemInTheRoom(newItem));
+                    currentRoom.removeItems(newItem);
+                    gui.setBagContain(player.getTotalWeight(),player.getWeight()+player.getTotalWeight());
+                }
 
         	}else {
                 gui.print("You cannot pick up this item it's too heavy");
@@ -291,6 +292,22 @@ public class GameEngine {
         }
 
     }
+
+    private void give(Command command){
+        if(!command.hasSecondWord()){
+            gui.print("Give What ?");
+            return;
+        }
+        String givenItem=command.getSecondWord();
+        if(player.checkItemInTheBag(givenItem)!=null){
+            gui.print(currentRoom.giveCharactersItem(player.checkItemInTheBag(givenItem)));
+            player.removeItemFromBag(givenItem);
+            gui.setBagContain(player.getTotalWeight(),player.getWeight()+player.getTotalWeight());
+        }
+        else{
+            gui.print("You don't have this item in your bag !");
+        }
+    }
     /**
     * Print goodbye and enable the entry field
     */
@@ -317,7 +334,6 @@ public class GameEngine {
     private void talk(){
         currentRoom.setImageName("src/images/kokoyashi1.png");
         gui.showImage(currentRoom.getImageName());
-
         gui.println(currentRoom.getCharactersHi());
     }
     /**
@@ -325,39 +341,13 @@ public class GameEngine {
     * other case he lose
     */
     private void pay() {
-        //TODO
-
-        String d=(player.getLocation()).getDescription();
-        System.out.println(d);
-        String[] validRoomToPay = {"It's a tramways that will get you to the other side \n but you have to pay the ticket or you will lose",
-                        "apple"};
-        for(int i=0;i<validRoomToPay.length;i++){
-            if((player.getLocation()).getDescription()==validRoomToPay[i]){
-                if(player.getSolde()-10>0) {
-                    player.setSolde(player.getSolde()-10);
-                    gui.print("Thank you it's 10$\n");
-                    (player.getLocation()).setExitByDescription("north","La marsa c'est la plage la plus douce");
-                    gui.setInformation(player.getSolde());
-                }
-            }
         
-        }
-       
     }
     /**
     * This function allow the player to open a new exits for a room
     */
     private void openRoom() {
-    	/*
-    	if(player.checkItemInTheBag("OtropiaKey")!=null){
-    		if(player.getLocation()!= ortopia) {
-    			gui.print("You don't have keys or this key is not for this room");
-    		}
-    		else {
-	    		player.removeItemFromBag("OtropiaKey");
-	            kalen.setExits("east",ortopia);
-    		}
-		}*/
+        
     }
     /**
     * This function allow the user to eat things eatable of course in his bag

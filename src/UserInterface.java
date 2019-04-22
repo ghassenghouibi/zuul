@@ -330,7 +330,7 @@ public class UserInterface implements ActionListener{
 	        	processCommand();
 		}
 		
-		public void setInformation(int x){
+		public void setSolde(int x){
 			String newSolde="Solde "+Integer.toString(x)+" $";
 			solde.setText(newSolde);
 		}
@@ -341,7 +341,7 @@ public class UserInterface implements ActionListener{
 		}
 
 		public void setLife(int x){
-			String newSolde="Solde "+Integer.toString(x)+" $";
+			String newSolde="Life "+Integer.toString(x)+"/3";
 			solde.setText(newSolde);
 		}
 	    /**
