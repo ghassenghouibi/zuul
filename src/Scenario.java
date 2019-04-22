@@ -4,15 +4,16 @@ import java.util.*;
 
 public class Scenario{
 
-    private List<Room> rooms;
+    private ArrayList<Room> rooms;
     private Room startRoom;
-    private Random random;
 
     public Scenario(){
-
-        random = new Random();
+        this.rooms=new ArrayList<Room>();
         Room cocoyashi, nooberland, wanoKuni, water7, kalen, ortopia, alabasta, krakenland, amazoneLily, skypia,paris8, rafel, pontDuJoie, elMourouj, parcB, laMarsa, sidiBouSaid;
-
+        
+        TransporterRoom sakura;
+        sakura =new TransporterRoom("Transporter room in this room you can be tranported to a random room", "src/images/teleport.gif");
+        
         cocoyashi = new Room("Cocoyashi", "src/images/kokoyashi.png");
         nooberland = new Room("Nooberland", "src/images/Nooberland.png");
         wanoKuni = new Room("Wano_kuni", "src/images/wanokuni.png");
@@ -49,13 +50,11 @@ public class Scenario{
         wanoKuni.addItems("apple", new Item("apple", "this item give you life ", 50, 10));
 
         water7.setExits("west", nooberland);
+        water7.setExits("east", sakura);
         water7.addItems("beamer", new Item("beamer", "this item can teleport you to a random room", 5, 10));
-
+        
         kalen.setExits("north", skypia);
         kalen.setExits("southEast", nooberland);
-        kalen.addItems("ammo", new Item("ammo", "this item can charge your Beamer", 1, 10));
-        kalen.addItems("ammo", new Item("ammo", "this item can charge your Beamer", 1, 10));
-        kalen.addItems("ammo", new Item("ammo", "this item can charge your Beamer", 1, 10));
         kalen.addItems("ammo", new Item("ammo", "this item can charge your Beamer", 1, 10));
 
         ortopia.setExits("north", krakenland);
@@ -83,30 +82,46 @@ public class Scenario{
 
         paris8.setExits("south", skypia);
         paris8.addItems("cookie", new Item("cookie", "This magic cookie multiply your bag weight by 2", 250, 0));
+        
         rafel.setExits("southWest", skypia);
         rafel.setExits("north", pontDuJoie);
         rafel.setExits("southEast", parcB);
         rafel.addItems("OtropiaKey", new Item("OtropiaKey", "this is a key of a room ", 50, 10));
         
-        rooms = Arrays.asList(new Room[]{cocoyashi, nooberland, wanoKuni, water7, kalen, ortopia, alabasta, krakenland, amazoneLily, skypia,paris8, rafel, pontDuJoie, elMourouj, parcB, laMarsa, sidiBouSaid});
+        rooms.add(cocoyashi);
+        rooms.add(nooberland);
+        rooms.add(wanoKuni);
+        rooms.add(water7);
+        rooms.add(kalen);
+        rooms.add(ortopia);
+        rooms.add(alabasta);
+        rooms.add(krakenland);
+        rooms.add(amazoneLily);
+        rooms.add(skypia);
+        rooms.add(paris8);
+        rooms.add(rafel);
+        rooms.add(pontDuJoie);
+        rooms.add(elMourouj);
+        rooms.add(parcB);
+        rooms.add(laMarsa);
+        rooms.add(sidiBouSaid);
         startRoom = cocoyashi;
     }
 
     /**
-     * @return  the start room for this scenario
-     */
+    * @return  the start room for this scenario
+    */
     public Room getStartRoom(){
         return this.startRoom;
     }
     
     /**
-     * @return  a random room from this scenario
-     */
+    * @return  a random room from this scenario
+    */
     public Room getRandomRoom(){
-        return rooms.get(random.nextInt(rooms.size()));
+        int random = (int)(Math.random() * rooms.size() + 1);
+        return rooms.get(random);
     }
-
-
 
 
 

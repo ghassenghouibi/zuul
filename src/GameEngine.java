@@ -53,7 +53,6 @@ public class GameEngine {
 
         do {
             LocalTime currentTime = LocalTime.now();
-            //System.out.println("Minute: " + currentTime.getMinute());
             if (currentTime.getMinute() == localTime3.getMinute()) {
                 endGame();
                 finish = 1;
@@ -74,8 +73,6 @@ public class GameEngine {
         gui.showImage(currentRoom.getImageName());
 
     }
-
-    
 
     /**
      * Given a command, process (that is: execute) the command. If this command ends
@@ -246,7 +243,7 @@ public class GameEngine {
     * This function allow to the player to pick up things in the room 
     * @param Command enter by the user 
     */
-    private void take(Command command) {
+    private void take(Command command){
     	if(!command.hasSecondWord()) {
     		gui.print("take What ?");
     		return;
@@ -256,6 +253,11 @@ public class GameEngine {
         	if(player.checkWeight(newItem, currentRoom.checkItemInTheRoom(newItem) )) {
         		player.addItemToBag(newItem,  currentRoom.checkItemInTheRoom(newItem));
                 currentRoom.removeItems(newItem);
+                if(newItem=="gold"){
+                    System.out.println(newItem);
+                    currentRoom.setImageName("src/images/kokoyashi2.png");
+                    gui.showImage(currentRoom.getImageName());
+                }
                 gui.setBagContain(player.getTotalWeight(),player.getWeight()+player.getTotalWeight());
 
 
@@ -313,6 +315,9 @@ public class GameEngine {
     }
 
     private void talk(){
+        currentRoom.setImageName("src/images/kokoyashi1.png");
+        gui.showImage(currentRoom.getImageName());
+
         gui.println(currentRoom.getCharactersHi());
     }
     /**
@@ -321,16 +326,23 @@ public class GameEngine {
     */
     private void pay() {
         //TODO
-        /*
-    	if(player.getLocation()==elMourouj) {
-    		if(player.getSolde()-10>0) {
-                player.setSolde(player.getSolde()-10);
-    			gui.print("Thank you it's 10$\n");
-    			elMourouj.setExits("southEast",laMarsa);
-                elMourouj.setExits("southWest",krakenland);
-                gui.setInformation(player.getSolde());
+
+        String d=(player.getLocation()).getDescription();
+        System.out.println(d);
+        String[] validRoomToPay = {"It's a tramways that will get you to the other side \n but you have to pay the ticket or you will lose",
+                        "apple"};
+        for(int i=0;i<validRoomToPay.length;i++){
+            if((player.getLocation()).getDescription()==validRoomToPay[i]){
+                if(player.getSolde()-10>0) {
+                    player.setSolde(player.getSolde()-10);
+                    gui.print("Thank you it's 10$\n");
+                    (player.getLocation()).setExitByDescription("north","La marsa c'est la plage la plus douce");
+                    gui.setInformation(player.getSolde());
+                }
             }
-        }*/
+        
+        }
+       
     }
     /**
     * This function allow the player to open a new exits for a room
