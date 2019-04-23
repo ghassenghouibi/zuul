@@ -413,7 +413,13 @@ public class GameEngine {
     * This function allow the player to open a new exits for a room
     */
     private void openRoom(){
-        
+        if(player.getLocation()==scenario.getRoomByName("pontDuJoie")){
+            if(player.getMagicKeys()==4){
+                scenario.getRoomByName("pontDuJoie").setExits("east",scenario.getWinRoom());
+            }else{
+                gui.println("You must have 4 key before \n");
+            }
+        }
     }
     /**
     * This function allow the user to eat things eatable of course in his bag

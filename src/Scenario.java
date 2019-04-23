@@ -6,10 +6,11 @@ public class Scenario{
 
     private HashMap<String,Room> rooms;
     private Room startRoom;
+    private Room winRoom;
 
     public Scenario(){
         this.rooms=new HashMap<String,Room>();
-        Room cocoyashi, nooberland, wanoKuni, water7, kalen, ortopia, alabasta, krakenland, amazoneLily, skypia,paris8, rafel, pontDuJoie, elMourouj, parcB, laMarsa, sidiBouSaid;
+        Room cocoyashi, nooberland, wanoKuni, water7, kalen, ortopia, alabasta, krakenland, amazoneLily, skypia,paris8, rafel, pontDuJoie, elMourouj, parcB, laMarsa, sidiBouSaid,theJackPot;
         
         TransporterRoom sakura;
         sakura =new TransporterRoom("Transporter room in this room you can be tranported to a random room", "src/images/teleport.gif");
@@ -26,12 +27,13 @@ public class Scenario{
         skypia = new Room("Skypia", "src/images/skypia.png");
         paris8 = new Room("Paris8, il semble que vous avez découvert une île absente sur votre carte, et si vous l'exploriez ?","src/images/paris8.png");
         rafel = new Room("Rafel, ~votre log pose n'arrête pas de s'agiter ...~", "src/images/raftel.png");
-        pontDuJoie = new Room("Pont Du joie ce pont fondé pour un but artistique ", "src/images/pontdujoie.png");
+        pontDuJoie = new Room("Pont Du joie there a locked room over here ", "src/images/pontdujoie.png");
         elMourouj = new Room("It's a tramways that will get you to the other side \n but you have to pay the ticket or you will lose","src/images/elmourouj.jpg");
         parcB = new Room("Parc B c'est un parc de l'Esperance Sportif De Tunis fondé en 1919", "src/images/parcb.jpg");
         laMarsa = new Room("La marsa c'est la plage la plus douce ", "src/images/lamarsa.jpg");
         sidiBouSaid = new Room("Sidi bou Said c'est la meilleur vue du monde ", "src/images/sidibousaid.jpg");
-        
+        theJackPot=new Room("","src/images/win.png");
+
         // initialise room exits & items
         cocoyashi.setExits("north", nooberland);
         cocoyashi.addItems("gold", new Item("gold", "you can sell gold to get money", 10, 10));
@@ -95,6 +97,8 @@ public class Scenario{
         rafel.setExits("southEast", parcB);
         rafel.addItems("OtropiaKey", new Item("OtropiaKey", "this is a key of a room ", 50, 10));
         
+
+        
         rooms.put("cocoyashi",cocoyashi);
         rooms.put("nooberland",nooberland);
         rooms.put("wanoKuni",wanoKuni);
@@ -113,6 +117,7 @@ public class Scenario{
         rooms.put("laMarsa",laMarsa);
         rooms.put("sidiBouSaid",sidiBouSaid);
         startRoom = cocoyashi;
+        winRoom=theJackPot;
     }
 
     /**
@@ -122,7 +127,9 @@ public class Scenario{
         return this.startRoom;
     }
     
-
+    public Room getWinRoom(){
+        return this.winRoom;
+    }
     public Room getRoomByName(String name){
       return rooms.get(name);
     }
