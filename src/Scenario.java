@@ -4,11 +4,11 @@ import java.util.*;
 
 public class Scenario{
 
-    private ArrayList<Room> rooms;
+    private HashMap<String,Room> rooms;
     private Room startRoom;
 
     public Scenario(){
-        this.rooms=new ArrayList<Room>();
+        this.rooms=new HashMap<String,Room>();
         Room cocoyashi, nooberland, wanoKuni, water7, kalen, ortopia, alabasta, krakenland, amazoneLily, skypia,paris8, rafel, pontDuJoie, elMourouj, parcB, laMarsa, sidiBouSaid;
         
         TransporterRoom sakura;
@@ -36,7 +36,10 @@ public class Scenario{
         cocoyashi.setExits("north", nooberland);
         cocoyashi.addItems("gold", new Item("gold", "you can sell gold to get money", 10, 10));
         cocoyashi.addItems("silver", new Item("silver", "you can sell silver to get money", 50, 10));
-        cocoyashi.addCharacters("cocoyahi", new Characters("Dali", "I can help you if you give me some money","Go to paris8 room you'll find a cookie eat it this make you bag bigger", new Item("gold", "you can sell gold to get money", 10, 10) ));
+        cocoyashi.addCharacters("cocoyahi-1", new Characters("Dali", "I can help you if you give me some money","Go to paris8 room you'll find a cookie eat it this make you bag bigger", new Item("gold", "you can sell gold to get money", 10, 10) ));
+        cocoyashi.addEnemies("dalton", new Enemy("dalton","Hi if you won i'll give you and item ","let's fight",new Item("gold", "you can sell gold to get money", 10, 10), 50));
+        cocoyashi.addCharacters("cocoyahi-2", new Characters("Sankou7", "I can help you if you give me gold","you find a sakura tree this can help you to grow you're crew", new Item("gold", "you can sell gold to get money", 10, 10)));
+        cocoyashi.addItems("magicKey",new Item("magicKey", "One of the magic key", 0, 0));
 
         nooberland.setExits("east", water7);
         nooberland.setExits("south", cocoyashi);
@@ -44,15 +47,18 @@ public class Scenario{
         nooberland.setExits("northWest", kalen);
         nooberland.setExits("northEast", alabasta);
         nooberland.addItems("sakura", new Item("sakura", "this item give you power", 500, 10));
+        nooberland.addItems("magicKey",new Item("magicKey", "One of the magic key", 0, 0));
 
         wanoKuni.setExits("east", nooberland);
         wanoKuni.addItems("fafa", new Item("fafa", "this item give you power", 50, 10));
         wanoKuni.addItems("apple", new Item("apple", "this item give you life ", 50, 10));
+        wanoKuni.addItems("magicKey",new Item("magicKey", "One of the magic key", 0, 0));
 
         water7.setExits("west", nooberland);
         water7.setExits("east", sakura);
         water7.addItems("beamer", new Item("beamer", "this item can teleport you to a random room", 5, 10));
-        
+        water7.addItems("magicKey",new Item("magicKey", "One of the magic key", 0, 0));
+
         kalen.setExits("north", skypia);
         kalen.setExits("southEast", nooberland);
         kalen.addItems("ammo", new Item("ammo", "this item can charge your Beamer", 1, 10));
@@ -82,30 +88,30 @@ public class Scenario{
         skypia.setExits("northEast", rafel);
 
         paris8.setExits("south", skypia);
-        paris8.addItems("cookie", new Item("cookie", "This magic cookie multiply your bag weight by 2", 250, 0));
+        paris8.addItems("cookie", new Item("cookie", "This magic cookie multiply your bag weight by 2", 250, 5));
         
         rafel.setExits("southWest", skypia);
         rafel.setExits("north", pontDuJoie);
         rafel.setExits("southEast", parcB);
         rafel.addItems("OtropiaKey", new Item("OtropiaKey", "this is a key of a room ", 50, 10));
         
-        rooms.add(cocoyashi);
-        rooms.add(nooberland);
-        rooms.add(wanoKuni);
-        rooms.add(water7);
-        rooms.add(kalen);
-        rooms.add(ortopia);
-        rooms.add(alabasta);
-        rooms.add(krakenland);
-        rooms.add(amazoneLily);
-        rooms.add(skypia);
-        rooms.add(paris8);
-        rooms.add(rafel);
-        rooms.add(pontDuJoie);
-        rooms.add(elMourouj);
-        rooms.add(parcB);
-        rooms.add(laMarsa);
-        rooms.add(sidiBouSaid);
+        rooms.put("cocoyashi",cocoyashi);
+        rooms.put("nooberland",nooberland);
+        rooms.put("wanoKuni",wanoKuni);
+        rooms.put("water7",water7);
+        rooms.put("kalen",kalen);
+        rooms.put("ortopia",ortopia);
+        rooms.put("alabasta",alabasta);
+        rooms.put("krakenland",krakenland);
+        rooms.put("amazoneLily",amazoneLily);
+        rooms.put("skypia",skypia);
+        rooms.put("paris8",paris8);
+        rooms.put("rafel",rafel);
+        rooms.put("pontDuJoie",pontDuJoie);
+        rooms.put("elMourouj",elMourouj);
+        rooms.put("parcB",parcB);
+        rooms.put("laMarsa",laMarsa);
+        rooms.put("sidiBouSaid",sidiBouSaid);
         startRoom = cocoyashi;
     }
 
@@ -116,12 +122,18 @@ public class Scenario{
         return this.startRoom;
     }
     
+
+    public Room getRoomByName(String name){
+      return rooms.get(name);
+    }
     /**
     * @return  a random room from this scenario
     */
     public Room getRandomRoom(){
-        int random = (int)(Math.random() * rooms.size() + 1);
-        return rooms.get(random);
+        Random generator = new Random();
+        Object[] values = rooms.values().toArray();
+        Room randomRoom = (Room) values[generator.nextInt(values.length)];
+        return randomRoom;
     }
 
 

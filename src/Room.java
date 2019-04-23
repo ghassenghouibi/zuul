@@ -59,6 +59,10 @@ public class Room {
     public void addCharacters(String roomName,Characters character){
         items.addCharacters(roomName,character);
     }
+
+    public void addEnemies(String roomName,Enemy enemy){
+        items.addEnemies(roomName,enemy);
+    }
     /**
     * remove items from this room.
     * @param itemName item Name
@@ -67,6 +71,9 @@ public class Room {
         items.removeItem(itemName);
     }
     
+    public void removeEnemy(String name){
+        items.removeEnemy(name);
+    }
     /**
     * Return a description of the room's exits,
     * for example "Exits: north west".
@@ -94,7 +101,7 @@ public class Room {
     * @return A description of the room, including exits.
     */
     public String getLongDescription(){
-         return "You are in " + description + ".\n->" + getExitString() + "\n->"+getItemsDescription() +"\n->" + getCharactersDescription()+"\n------------------------------------------------------------------------------------------------------\n";
+         return "You are in " + description + ".\n->" + getExitString() + "\n->"+getItemsDescription() +"\n->" + getCharactersDescription()+"\n->"+getEnemiesDescription() +"\n------------------------------------------------------------------------------------------------------\n";
     }
     
     /**
@@ -112,6 +119,10 @@ public class Room {
     public Item checkItemInTheRoom(String name) {
     	return items.checkItemInList(name);
     }
+
+    public Enemy checkEnemiesInTheRoom(String name){
+        return items.checkEnemiesInTheRoom(name);
+    }
     /**
     * This function allows to get all items description from ItemList 
     */
@@ -123,6 +134,9 @@ public class Room {
 		return "Characters :"+items.getCharactersDescription();
     }
 
+    public String getEnemiesDescription(){
+        return "Enemies :"+items.getEnemiesDescription();
+    }
     public String getCharactersHi(){
         return items.getHi()+"\n";
     }
