@@ -54,6 +54,7 @@ public class GameEngine {
 
         do {
             LocalTime currentTime = LocalTime.now();
+            gui.sound("src/music/Pirate.wav");
             if (currentTime.getMinute() == localTime3.getMinute()) {
                 endGame();
                 finish = 1;
@@ -169,7 +170,6 @@ public class GameEngine {
     		return;
     	}
         String name=command.getSecondWord();
-        
         if((currentRoom.checkEnemiesInTheRoom(name)).getStrength()<player.getStrength()){
             currentRoom.addItems(currentRoom.checkEnemiesInTheRoom(name).getItem().getName(),currentRoom.checkEnemiesInTheRoom(name).getItem());
             currentRoom.removeEnemy(currentRoom.checkEnemiesInTheRoom(name).getName());
@@ -191,12 +191,15 @@ public class GameEngine {
     * Get you back to the room just before 
     */
     private void backRoom() {
-    	if (displacement.isEmpty())
-    		gui.println("You are at the start Point");
+    	if (displacement.isEmpty()){
+            gui.println("You are at the start Point");
+            gui.setButtonColor(currentRoom.getExitButton());
+        }
     	else {
     		currentRoom=displacement.pop();
     		gui.println("You back to "+currentRoom.getDescription());
-    		gui.println("You Maybe Missed those "+currentRoom.getItemsDescription());
+            gui.println("You Maybe Missed those "+currentRoom.getItemsDescription());
+            gui.setButtonColor(currentRoom.getExitButton());
     		if(currentRoom.getImageName()!=null)
     			gui.showImage(currentRoom.getImageName());
     	}
@@ -314,7 +317,6 @@ public class GameEngine {
                 }
                 else{
         		    player.addItemToBag(player, currentRoom.checkItemInTheRoom(newItem));
-                    //player.setWeight(player.getWeight()+currentRoom.checkItemInTheRoom(newItem).getWeight());
                     currentRoom.removeItems(newItem);
                     gui.setBagContain(player.getTotalWeight(),player.getWeight()+player.getTotalWeight());
                     gui.println("You just took a "+newItem);
@@ -449,6 +451,8 @@ public class GameEngine {
                 gui.println("Thank you see you soon");
                 scenario.getRoomByName("elMourouj").setExits("southEast", scenario.getRoomByName("laMarsa"));
                 scenario.getRoomByName("elMourouj").setExits("southWest", scenario.getRoomByName("rafel"));
+                gui.setButtonColor(currentRoom.getExitButton());
+
 
             }else{
                 gui.println("You don't have enough money sorry");
@@ -464,6 +468,8 @@ public class GameEngine {
             if(player.getMagicKeys()==4){
                 scenario.getRoomByName("pontDuJoie").setExits("east",scenario.getWinRoom());
                 gui.println("Door Opening ...");
+                gui.setButtonColor(currentRoom.getExitButton());
+
             }else{
                 gui.println("You must have 4 key before \n");
             }
@@ -473,12 +479,16 @@ public class GameEngine {
             if(player.checkItemInTheBag("darkaKey")!=null){
                 scenario.getRoomByName("tatami").setExits("north",scenario.getRoomByName("darka"));
                 gui.println("Cool you got the key there a new room north");
+                gui.setButtonColor(currentRoom.getExitButton());
+
             }
         }
         else if(player.getLocation()==scenario.getRoomByName("krakenland")){
             if(player.checkItemInTheBag("OrtopiaKey")!=null){
                 scenario.getRoomByName("krakenland").setExits("south", scenario.getRoomByName("ortopia"));
                 gui.println("Door south opened ");
+                gui.setButtonColor(currentRoom.getExitButton());
+
             }
         }
     }
