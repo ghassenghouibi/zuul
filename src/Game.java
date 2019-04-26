@@ -27,10 +27,4 @@ public class Game
         engine.play(gui);
     }
     
-    /**
-    *  Main play routine.  Loops until end of play.
-    */
-    public static void main(String[] args) {
-		  new Game();
-    }
 }
