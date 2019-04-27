@@ -28,8 +28,8 @@ public class UserInterface implements ActionListener {
 	private AudioStream BGM;
 	private AudioPlayer MGP = AudioPlayer.player;
 	private	ContinuousAudioDataStream loop = null;
-
-
+	private GridBagConstraints gbc;
+	private JPanel panel;
 
 	/**
 	 * Construct a UserInterface. As a parameter, a Game Engine (an object
@@ -105,22 +105,23 @@ public class UserInterface implements ActionListener {
 		log = new JTextArea();
 		log.setEditable(false);
 		JScrollPane listScroller = new JScrollPane(log);
-		listScroller.setPreferredSize(new Dimension(400, 200));
+		listScroller.setPreferredSize(new Dimension(640, 200));
 		listScroller.setMinimumSize(new Dimension(250, 100));
 
-		JPanel panel = new JPanel();
+		panel = new JPanel();
+
 		image = new JLabel();
 
 		panel.setLayout(new GridBagLayout());
 
-		GridBagConstraints gbc = new GridBagConstraints();
+		gbc = new GridBagConstraints();
 
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.gridheight = 1;
 		// gbc.gridwidth=6;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.gridwidth = GridBagConstraints.REMAINDER;
+		gbc.fill = GridBagConstraints.HRIZONTAL;
+		gbc.gridwidth = GridBagConstraints.PAGE_END;
 		panel.add(image, gbc);
 
 		gbc.gridx = 0;
@@ -404,7 +405,7 @@ public class UserInterface implements ActionListener {
         MGP.start(loop);
 	
 	}
-	
+
 	public void setButtonColor(ArrayList<String> list){
 		north.setBackground(null);
 		south.setBackground(null);

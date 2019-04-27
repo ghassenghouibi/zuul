@@ -91,11 +91,9 @@ public class GameEngine {
     private void printWelcome() {
         gui.print("\n");
         gui.println("Welcome to One Piece treasure cruise!");
-        gui.println("One Piece is a new, incredibly boring adventure game.");
-        gui.println(
-                "You must find ou 4 key to get to the final room and kill the boss\n if you pick up the coin you'll win\n");
+        gui.println("One Piece is a Fantastic adventure game.");
+        gui.println("You must find ou 4 key to get to the final room and kill the boss\nif you pick up the coin you'll win");
         gui.println("Type 'help' if you need help.");
-        gui.print("\n");
         gui.println(currentRoom.getLongDescription());
         gui.showImage(currentRoom.getImageName());
 
