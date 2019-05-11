@@ -1,5 +1,6 @@
-package src;
-public class Main{
+import src.Game;
+
+public class Main {
 
      /**
     *  Main play routine.  Loops until end of play.

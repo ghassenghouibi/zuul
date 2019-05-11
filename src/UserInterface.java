@@ -2,6 +2,7 @@ package src;
 
 import javax.swing.*;
 
+import src.*;
 import sun.audio.AudioPlayer;
 import sun.audio.AudioStream;
 import sun.audio.ContinuousAudioDataStream;
@@ -14,7 +15,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList; // import the ArrayList class
-
 //import java.awt.image.*;
 public class UserInterface implements ActionListener {
 
@@ -120,7 +120,7 @@ public class UserInterface implements ActionListener {
 		gbc.gridy = 0;
 		gbc.gridheight = 1;
 		// gbc.gridwidth=6;
-		gbc.fill = GridBagConstraints.HRIZONTAL;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.gridwidth = GridBagConstraints.PAGE_END;
 		panel.add(image, gbc);
 
