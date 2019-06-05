@@ -1,9 +1,5 @@
-package src.pkg_utils;
-import java.util.StringTokenizer;
-import src.pkg_commands.*;
 /** 
-* This class is part of "World of Zuul". "World of Zuul" is a simple, 
-* text based adventure game.
+* This class is part of "One piece Treasure-cruise". "World of Zuul" is a simple adventure game.
 *
 * This parser takes user input and tries to interpret it as a "Zuul"
 * command. Every time it is called it takes a line as a String and
@@ -14,21 +10,25 @@ import src.pkg_commands.*;
 * the known commands, and if the input is not one of the known commands, it
 * returns a command object that is marked as an unknown command.
 * 
-* @author  Michael Kolling and David J. Barnes
-* @version 2.0 (Jan 2003)
+* @author  Université Paris8 Groupe5 
+* @version 3.0 (May 2019)
 */
+
+package src.pkg_utils;
+
+import src.pkg_commands.*;
+import java.util.StringTokenizer;
+
 
 public class Parser {
 
-    private CommandWords commands;  // holds all valid command words
-    //private Scanner     reader;
+    private CommandWords commands;  
     /**
      * Create a new Parser.
      */
     public Parser() 
     {
-        commands = new CommandWords();
-        //reader = new Scanner(System.in);
+        this.commands = new CommandWords();
     }
 
     /**
@@ -55,11 +55,12 @@ public class Parser {
         else
             word2 = null;
         
-        // note: we just ignore the rest of the input line.
-        // Now check whether this word is known. If so, create a command
-        // with it. If not, create a "null" command (for unknown command).
-
-        return new Command(commands.getCommandWord(word1), word2);
+                
+        Command command = this.commands.getCommandWord(word1).get();
+        if(command != null) {
+            command.setSecondWord(word2);
+        }
+        return command;
 
     }
 
@@ -68,6 +69,6 @@ public class Parser {
      */
     public String showCommands()
     {
-        return "Your command words are:\n\n"+commands.getCommandList();
+        return "Your command words are:\n\n"+this.commands.getCommandList();
     }
 }

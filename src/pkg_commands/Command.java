@@ -1,4 +1,4 @@
-package src.pkg_commands;
+
 /**
 * This class is the main class of the "World of Zuul" application. 
 * "World of Zuul" is a very simple, text based adventure game.  
@@ -14,34 +14,37 @@ package src.pkg_commands;
 *
 * If the command had only one word, then the second word is <null>.
 * 
-* @author  Ghouibi Ghassen
-* @version 3.0 (April 2019)
+* @author  Université Paris8 Groupe5
+* @version 3.0 (May 2019)
 */
 
-public class Command
-{
-    private CommandWord commandWord;
-    private String      secondWord;
+package src.pkg_commands;
+import src.pkg_game.*;
+import src.pkg_utils.*;
+import src.pkg_characters.*;
 
-    /**
+public abstract class Command
+{
+	protected String command;
+    private String secondWord;
+    protected UserInterface gui;
+    protected GameEngine engine;
+    
+	/**
      * Create a command object. First and second word must be supplied, but
      * either one (or both) can be null. The command word should be null to
      * indicate that this was a command that is not recognised by this game.
      */
-    public Command(CommandWord firstWord, String secondWord)
+    public Command()
     {
-        this.commandWord = firstWord;
+        secondWord = null;
+    }
+    
+    public Command(String secondWord)
+    {
         this.secondWord = secondWord;
     }
 
-    /**
-     * Return the command word (the first word) of this command. If the
-     * command was not understood, the result is null.
-     */
-    public CommandWord getCommandWord()
-    {
-        return commandWord;
-    }
 
     /**
      * Return the second word of this command. Returns null if there was no
@@ -51,13 +54,15 @@ public class Command
     {
         return secondWord;
     }
-
+    
     /**
-     * Return true if this command was not understood.
+     * Define the second word of this command (the word
+     * entered after the command word). Null indicates that 
+     * there was no second word.
      */
-    public boolean isUnknown()
+    public void setSecondWord(String secondWord)
     {
-        return (commandWord == CommandWord.UNKNOWN);
+        this.secondWord = secondWord;
     }
 
     /**
@@ -67,5 +72,61 @@ public class Command
     {
         return (secondWord != null);
     }
+    
+    /**
+	 * Get the gui
+	 */
+    public UserInterface getGui() {
+		return gui;
+	}
+
+    /**
+     * Set the gui
+     * 
+     * @param gui
+     */
+	public void setGui(UserInterface gui) {
+		this.gui = gui;
+	}
+	
+	/**
+	 * Get the engine
+	 */
+	public GameEngine getEngine() {
+		return engine;
+	}
+
+	/**
+     * Set the engine
+     * 
+     * @param engine
+     */
+	public void setEngine(GameEngine engine) {
+		this.engine = engine;
+	}
+	
+	/**
+	 * Get the command
+	 */
+	public String getCommand() {
+		return command;
+	}
+
+	/**
+     * Set the command
+     * 
+     * @param command
+     */
+	public void setCommand(String command) {
+		this.command = command;
+	}
+    
+    /**
+     * Execute this command. A flag is returned indicating whether
+     * the game is over as a result of this command.
+     * 
+     * @return True, if game should exit; false otherwise.
+     */
+    public abstract boolean execute(Player player);
 }
 
